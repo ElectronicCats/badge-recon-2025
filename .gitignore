@@ -26,4 +26,4 @@ hardware/**/~*.lck
 hardware/**/*.xml
 hardware/**/*.csv
 
-hardware/Template-KiCAD-Project-CI-backups/
+hardware/badge-recon-2025-backups/
