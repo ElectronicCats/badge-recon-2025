@@ -130,6 +130,196 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector:Screw_Terminal_01x02"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Screw_Terminal_01x02"
+				(at 0 -5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Generic screw terminal, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "screw terminal"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "TerminalBlock*:*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Screw_Terminal_01x02_1_1"
+				(rectangle
+					(start -1.27 1.27)
+					(end 1.27 -3.81)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.5334 0.3302) (xy 0.3302 -0.508)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.5334 -2.2098) (xy 0.3302 -3.048)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.3556 0.508) (xy 0.508 -0.3302)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.3556 -2.032) (xy 0.508 -2.8702)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 0)
+					(radius 0.635)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -2.54)
+					(radius 0.635)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 -2.54 0)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector:Screw_Terminal_01x04"
 			(pin_names
 				(offset 1.016)
@@ -416,200 +606,6 @@
 						)
 					)
 					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
-		(symbol "Device:Battery_Cell"
-			(pin_numbers
-				(hide yes)
-			)
-			(pin_names
-				(offset 0)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "BT1"
-				(at 2.54 2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "Battery_Cell"
-				(at -12.446 4.064 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" "Batteries:BAT-HLD-001"
-				(at 0 1.524 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" ""
-				(at 0 1.524 90)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "Single-cell battery"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "LCSC#" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "manf#" "BAT-HLD-001"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "battery cell"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Battery_Cell_0_1"
-				(rectangle
-					(start -2.286 1.778)
-					(end 2.286 1.524)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(rectangle
-					(start -1.5748 1.1938)
-					(end 1.4732 0.6858)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 1.778) (xy 0 2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0.762) (xy 0 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.508 3.429) (xy 1.524 3.429)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.016 3.937) (xy 1.016 2.921)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "Battery_Cell_1_1"
-				(pin passive line
-					(at 0 5.08 270)
-					(length 2.54)
-					(name "+"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -2.54 90)
-					(length 2.54)
-					(name "-"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -6753,16 +6749,6 @@
 		)
 		(uuid "63ec0312-61e0-4b71-9ec3-86f04f7c8576")
 	)
-	(text "BATTERY 2 AAA"
-		(exclude_from_sim no)
-		(at 299.212 192.024 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-		)
-		(uuid "684a5f26-cbd8-4fa0-876c-98a0644dde1c")
-	)
 	(text "MAGSPOOF AND COIL"
 		(exclude_from_sim no)
 		(at 248.92 18.542 0)
@@ -7667,6 +7653,16 @@
 	)
 	(wire
 		(pts
+			(xy 284.48 194.31) (xy 285.496 194.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "28960dc2-b41b-4859-8082-d936cb6be94a")
+	)
+	(wire
+		(pts
 			(xy 111.76 44.069) (xy 91.059 44.069)
 		)
 		(stroke
@@ -7924,6 +7920,16 @@
 			(type default)
 		)
 		(uuid "3ed03f96-5529-4a69-aed1-d5d95980e377")
+	)
+	(wire
+		(pts
+			(xy 285.369 191.77) (xy 285.369 190.754)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3f88388e-8138-4465-9b6b-927d53c27824")
 	)
 	(wire
 		(pts
@@ -8624,6 +8630,16 @@
 			(type default)
 		)
 		(uuid "83560f5f-bd86-4557-b042-54d090d64f0a")
+	)
+	(wire
+		(pts
+			(xy 284.48 191.77) (xy 285.369 191.77)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "84e11151-75aa-41b7-9a83-b8aaa8e0d3d6")
 	)
 	(wire
 		(pts
@@ -9567,6 +9583,16 @@
 	)
 	(wire
 		(pts
+			(xy 285.496 194.31) (xy 285.496 195.199)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cc319e0e-95c6-40c8-99b2-34206c81d729")
+	)
+	(wire
+		(pts
 			(xy 189.357 62.484) (xy 201.422 62.484)
 		)
 		(stroke
@@ -9884,16 +9910,6 @@
 			(type default)
 		)
 		(uuid "e9d9d089-d706-4837-a724-dc6c8af5b04d")
-	)
-	(wire
-		(pts
-			(xy 283.21 191.77) (xy 283.21 193.04)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ea75ebd8-d145-4c50-bbbe-169eaf61dbce")
 	)
 	(wire
 		(pts
@@ -10901,7 +10917,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1810261812_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf"
+		(property "Datasheet" ""
 			(at 141.605 154.432 0)
 			(effects
 				(font
@@ -11021,7 +11037,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C2886897"
+		(property "LCSC#" "C318889"
 			(at 360.68 120.65 0)
 			(effects
 				(font
@@ -11090,7 +11106,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 38.989 67.818 0)
 			(effects
 				(font
@@ -11247,7 +11263,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_PANASONIC-ERJ3GEYJ270V_C403464.pdf"
+		(property "Datasheet" ""
 			(at 118.11 111.76 0)
 			(effects
 				(font
@@ -11398,7 +11414,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "BomberCat:JS202011CQN"
+		(property "Footprint" "Footprints:JS202011CQN"
 			(at 348.107 26.543 0)
 			(effects
 				(font
@@ -11506,7 +11522,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 164.211 154.432 0)
 			(effects
 				(font
@@ -11591,7 +11607,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342"
 			(at 279.4 138.43 0)
 			(effects
 				(font
@@ -11616,6 +11632,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "LCSC#" "C318889"
+			(at 279.4 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -11826,7 +11850,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1810261812_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf"
+		(property "Datasheet" ""
 			(at 120.65 49.784 0)
 			(effects
 				(font
@@ -12052,7 +12076,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1810261812_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf"
+		(property "Datasheet" ""
 			(at 160.274 181.864 0)
 			(effects
 				(font
@@ -12555,7 +12579,7 @@
 				)
 			)
 		)
-		(property "Footprint" "BomberCat:JS102011SAQN"
+		(property "Footprint" "Footprints:JS102011SAQN"
 			(at 97.663 251.968 0)
 			(effects
 				(font
@@ -12723,7 +12747,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811101032_PSA-Prosperity-Dielectrics-FN18X104K500PBG_C235731.pdf"
+		(property "Datasheet" ""
 			(at 128.143 50.292 0)
 			(effects
 				(font
@@ -12777,6 +12801,102 @@
 			(project "badge-recon-2025"
 				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
 					(reference "C9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Screw_Terminal_01x02")
+		(at 279.4 194.31 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2b0989da-7a8b-4987-9c37-9486386fbf57")
+		(property "Reference" "J3"
+			(at 277.368 194.1068 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Battery"
+			(at 277.368 191.7954 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Footprint:BAT-TH_BH-AAA-A1AJ024"
+			(at 279.4 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 279.4 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 279.4 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C5290193"
+			(at 279.4 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "manf#" "-"
+			(at 279.4 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "provedor" "-"
+			(at 279.4 194.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c7612506-1f2f-48bf-be1c-bc2a4e19bc55")
+		)
+		(pin "2"
+			(uuid "bb5a45cd-881a-42b6-9bbb-9a71b397ff13")
+		)
+		(instances
+			(project "badge-recon-2025"
+				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
+					(reference "J3")
 					(unit 1)
 				)
 			)
@@ -12841,6 +12961,72 @@
 			(project "badge-recon-2025"
 				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
 					(reference "#PWR034")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+BATT")
+		(at 285.369 190.754 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2f5ca9a1-8e6f-4636-aa95-07722460332a")
+		(property "Reference" "#PWR026"
+			(at 285.369 194.564 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+BATT"
+			(at 284.988 186.3598 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 285.369 190.754 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 285.369 190.754 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 285.369 190.754 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6c38f685-0ae0-47e4-b1b2-dcb636a39379")
+		)
+		(instances
+			(project "badge-recon-2025"
+				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
+					(reference "#PWR026")
 					(unit 1)
 				)
 			)
@@ -13010,7 +13196,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811082013_PANASONIC-ERJ3GEYJ103V_C169849.pdf"
+		(property "Datasheet" ""
 			(at 30.226 38.1 0)
 			(effects
 				(font
@@ -13027,7 +13213,7 @@
 				)
 			)
 		)
-		(property "manf#" "ERJ3GEYJ103V"
+		(property "manf#" ""
 			(at 30.226 38.1 0)
 			(effects
 				(font
@@ -13036,7 +13222,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C169849"
+		(property "LCSC#" "C2930027"
 			(at 30.226 38.1 0)
 			(effects
 				(font
@@ -13064,71 +13250,6 @@
 			(project "badge-recon-2025"
 				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
 					(reference "R2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+BATT")
-		(at 283.21 184.15 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "39d616bb-fa13-4fdb-890b-e5847dd5d178")
-		(property "Reference" "#PWR036"
-			(at 283.21 187.96 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+BATT"
-			(at 283.591 179.7558 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 283.21 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 283.21 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 283.21 184.15 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8f3dc1e3-3a78-4361-a267-964cbd8ef5ea")
-		)
-		(instances
-			(project "badge-recon-2025"
-				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
-					(reference "#PWR036")
 					(unit 1)
 				)
 			)
@@ -13170,7 +13291,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 168.402 181.864 0)
 			(effects
 				(font
@@ -13263,7 +13384,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/2007151233_YAGEO-RC0603FR-073R4L_C482832.pdf"
+		(property "Datasheet" ""
 			(at 205.232 52.07 0)
 			(effects
 				(font
@@ -13356,7 +13477,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/2007151233_YAGEO-RC0603FR-073R4L_C482832.pdf"
+		(property "Datasheet" ""
 			(at 205.359 59.69 0)
 			(effects
 				(font
@@ -13708,7 +13829,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 187.325 154.432 0)
 			(effects
 				(font
@@ -13928,7 +14049,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/2001132237_Chinocera-HGC0402G0220J500NTEJ_C482483.pdf"
+		(property "Datasheet" ""
 			(at 22.225 171.704 0)
 			(effects
 				(font
@@ -14087,7 +14208,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~https://datasheet.lcsc.com/lcsc/1811021421_Samsung-Electro-Mechanics-CL10A106MP8NNNC_C85713.pdf"
+		(property "Datasheet" ""
 			(at 106.426 256.54 0)
 			(effects
 				(font
@@ -14182,7 +14303,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811082013_PANASONIC-ERJ3GEYJ103V_C169849.pdf"
+		(property "Datasheet" ""
 			(at 170.434 249.936 0)
 			(effects
 				(font
@@ -14199,7 +14320,7 @@
 				)
 			)
 		)
-		(property "LCSC#" "C169849"
+		(property "LCSC#" "C2930027"
 			(at 170.434 249.936 0)
 			(effects
 				(font
@@ -14208,7 +14329,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" "ERJ3GEYJ103V"
+		(property "manf#" ""
 			(at 170.434 249.936 0)
 			(effects
 				(font
@@ -14277,7 +14398,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 194.945 154.178 0)
 			(effects
 				(font
@@ -14372,7 +14493,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 175.514 181.864 0)
 			(effects
 				(font
@@ -14529,7 +14650,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1810170519_PANASONIC-ERJ3RBD5101V_C191782.pdf"
+		(property "Datasheet" ""
 			(at 50.038 243.84 0)
 			(effects
 				(font
@@ -14546,7 +14667,7 @@
 				)
 			)
 		)
-		(property "manf#" "ERJ3RBD5101V"
+		(property "manf#" ""
 			(at 50.038 243.84 0)
 			(effects
 				(font
@@ -14555,7 +14676,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C191782"
+		(property "LCSC#" "C23186"
 			(at 50.038 243.84 0)
 			(effects
 				(font
@@ -14616,7 +14737,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "BomberCat:Coil_30t_30mm_0.2_0.2_0.6_0.3"
+		(property "Footprint" "Footprints:Coil_30t_30mm_0.2_0.2_0.6_0.3"
 			(at 308.61 72.39 0)
 			(effects
 				(font
@@ -14692,7 +14813,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811151132_Walsin-Tech-Corp-WR06X1001FTL_C112433.pdf"
+		(property "Datasheet" ""
 			(at 45.72 162.56 0)
 			(effects
 				(font
@@ -14844,7 +14965,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342"
 			(at 279.4 116.84 0)
 			(effects
 				(font
@@ -14869,6 +14990,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "LCSC#" "C318889"
+			(at 279.4 121.92 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -14922,7 +15051,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_SANYEAR-C0603X5R106M160NT_C466781.pdf"
+		(property "Datasheet" ""
 			(at 348.107 51.054 0)
 			(effects
 				(font
@@ -14940,7 +15069,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C466781"
+		(property "LCSC#" "C96446"
 			(at 348.107 51.054 0)
 			(effects
 				(font
@@ -14949,7 +15078,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" "C0603X5R106M160NT"
+		(property "manf#" ""
 			(at 348.107 51.054 0)
 			(effects
 				(font
@@ -15228,7 +15357,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811151133_Walsin-Tech-Corp-WR06X104JTL_C163843.pdf"
+		(property "Datasheet" ""
 			(at 112.141 82.55 0)
 			(effects
 				(font
@@ -15246,7 +15375,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" "WR06X104JTL"
+		(property "manf#" ""
 			(at 112.141 82.55 0)
 			(effects
 				(font
@@ -15324,7 +15453,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811082013_PANASONIC-ERJ3GEYJ103V_C169849.pdf"
+		(property "Datasheet" ""
 			(at 24.384 38.227 0)
 			(effects
 				(font
@@ -15341,7 +15470,7 @@
 				)
 			)
 		)
-		(property "manf#" "ERJ3GEYJ103V"
+		(property "manf#" ""
 			(at 24.384 38.227 0)
 			(effects
 				(font
@@ -15350,7 +15479,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C169849"
+		(property "LCSC#" "C2930027"
 			(at 24.384 38.227 0)
 			(effects
 				(font
@@ -15483,7 +15612,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 179.705 154.432 0)
 			(effects
 				(font
@@ -15537,101 +15666,6 @@
 			(project "badge-recon-2025"
 				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
 					(reference "C19")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Battery_Cell")
-		(at 283.21 198.12 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "76dc7754-1242-4b0c-9e7b-1ba51c736768")
-		(property "Reference" "BT1"
-			(at 285.75 195.58 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Battery_Cell"
-			(at 270.764 194.056 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Battery:BatteryHolder_Keystone_2466_1xAAA"
-			(at 283.21 196.596 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 283.21 196.596 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 283.21 198.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC#" "C5290189 "
-			(at 283.21 198.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "manf#" "BH-AAA-A1AJ001 "
-			(at 283.21 198.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "provedor" ""
-			(at 283.21 198.12 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "4d9d0cbb-64ed-4abf-a335-5701333656d5")
-		)
-		(pin "1"
-			(uuid "79f59337-d968-491a-b49b-1ce97a4124a2")
-		)
-		(instances
-			(project "badge-recon-2025"
-				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
-					(reference "BT1")
 					(unit 1)
 				)
 			)
@@ -16023,7 +16057,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/2006011904_Darfon-Elec-C1608NP0121JGTS_C561174.pdf"
+		(property "Datasheet" ""
 			(at 189.357 59.944 0)
 			(effects
 				(font
@@ -16040,7 +16074,7 @@
 				)
 			)
 		)
-		(property "manf#" "C0603C121J5GAC"
+		(property "manf#" ""
 			(at 189.357 59.944 0)
 			(effects
 				(font
@@ -16058,7 +16092,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C561174"
+		(property "LCSC#" "C107035"
 			(at 189.357 59.944 0)
 			(effects
 				(font
@@ -16118,7 +16152,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 171.831 154.432 0)
 			(effects
 				(font
@@ -16442,7 +16476,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 149.225 154.432 0)
 			(effects
 				(font
@@ -16619,7 +16653,7 @@
 				)
 			)
 		)
-		(property "Footprint" "BomberCat:W25Q16JVUUIQ"
+		(property "Footprint" "Footprints:W25Q16JVUUIQ"
 			(at 185.42 257.81 0)
 			(effects
 				(font
@@ -16744,7 +16778,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 152.146 262.509 0)
 			(effects
 				(font
@@ -17153,7 +17187,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C636876"
+		(property "LCSC#" "C44150"
 			(at 327.787 45.339 0)
 			(effects
 				(font
@@ -17240,7 +17274,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811082117_YAGEO-RC0603JR-072K2L_C113303.pdf"
+		(property "Datasheet" ""
 			(at 177.673 70.866 0)
 			(effects
 				(font
@@ -17489,7 +17523,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" "CONUFL001-SMD"
+		(property "manf#" "CONUFL001-SMD-T "
 			(at 213.487 55.88 0)
 			(effects
 				(font
@@ -17677,101 +17711,6 @@
 			(project "badge-recon-2025"
 				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
 					(reference "#PWR014")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:Battery_Cell")
-		(at 283.21 189.23 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "a042cba8-e889-4650-ba3e-fa9fff629fa6")
-		(property "Reference" "BT2"
-			(at 285.75 186.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Battery_Cell"
-			(at 270.764 185.166 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Battery:BatteryHolder_Keystone_2466_1xAAA"
-			(at 283.21 187.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 283.21 187.706 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 283.21 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "LCSC#" "C5290189 "
-			(at 283.21 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "manf#" "BH-AAA-A1AJ001 "
-			(at 283.21 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "provedor" ""
-			(at 283.21 189.23 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "dabbec2c-c30d-49e1-b86a-d0e289083c87")
-		)
-		(pin "1"
-			(uuid "80deb0b7-62ca-4d1f-b7ea-de16185c60b8")
-		)
-		(instances
-			(project "badge-recon-2025"
-				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
-					(reference "BT2")
 					(unit 1)
 				)
 			)
@@ -18284,7 +18223,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "ae267929-5045-405c-9bb8-319a56701526")
 		(property "Reference" "JP1"
@@ -18461,7 +18400,7 @@
 				)
 			)
 		)
-		(property "manf#" "PN7150B0HN"
+		(property "manf#" "PN7150B0HN/C11002E "
 			(at 70.739 51.689 0)
 			(effects
 				(font
@@ -18479,7 +18418,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C11002"
+		(property "LCSC#" "C702907"
 			(at 70.739 51.689 0)
 			(effects
 				(font
@@ -18706,7 +18645,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 44.323 67.945 0)
 			(effects
 				(font
@@ -18903,7 +18842,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "~https://datasheet.lcsc.com/lcsc/1811021421_Samsung-Electro-Mechanics-CL10A106MP8NNNC_C85713.pdf"
+		(property "Datasheet" ""
 			(at 130.81 254.508 0)
 			(effects
 				(font
@@ -19080,7 +19019,7 @@
 				)
 			)
 		)
-		(property "Footprint" "BomberCat:RP2040-QFN-56"
+		(property "Footprint" "Footprints:RP2040-QFN-56"
 			(at 62.23 154.94 0)
 			(effects
 				(font
@@ -19411,7 +19350,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1810170519_PANASONIC-ERJ3RBD5101V_C191782.pdf"
+		(property "Datasheet" ""
 			(at 50.038 241.3 0)
 			(effects
 				(font
@@ -19428,7 +19367,7 @@
 				)
 			)
 		)
-		(property "manf#" "ERJ3RBD5101V"
+		(property "manf#" ""
 			(at 50.038 241.3 0)
 			(effects
 				(font
@@ -19437,7 +19376,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C191782"
+		(property "LCSC#" "C23186"
 			(at 50.038 241.3 0)
 			(effects
 				(font
@@ -19585,7 +19524,7 @@
 				)
 			)
 		)
-		(property "manf#" "TYPE-C-31-M-31"
+		(property "manf#" ""
 			(at 30.48 251.46 0)
 			(effects
 				(font
@@ -19594,7 +19533,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C2987386"
+		(property "LCSC#" "C393939"
 			(at 30.48 251.46 0)
 			(effects
 				(font
@@ -19719,71 +19658,6 @@
 			(project "badge-recon-2025"
 				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
 					(reference "#PWR062")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 283.21 200.66 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c7b418da-ea47-4683-ad9d-5bc28d0b493a")
-		(property "Reference" "#PWR035"
-			(at 283.21 207.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 283.337 205.0542 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 283.21 200.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 283.21 200.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 283.21 200.66 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "98dd36cc-e132-44e8-8cdc-7470e4cdf775")
-		)
-		(instances
-			(project "badge-recon-2025"
-				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
-					(reference "#PWR035")
 					(unit 1)
 				)
 			)
@@ -19953,7 +19827,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811101032_PSA-Prosperity-Dielectrics-FN18X104K500PBG_C235731.pdf"
+		(property "Datasheet" ""
 			(at 111.76 50.546 0)
 			(effects
 				(font
@@ -20240,7 +20114,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_CCTC-TCC0603COG100J500CT_C376764.pdf"
+		(property "Datasheet" ""
 			(at 156.591 154.432 0)
 			(effects
 				(font
@@ -20294,6 +20168,72 @@
 			(project "badge-recon-2025"
 				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
 					(reference "C13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 285.496 195.199 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d09bd511-e946-446d-b409-febd024b42b7")
+		(property "Reference" "#PWR030"
+			(at 285.496 201.549 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 285.369 199.5932 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 285.496 195.199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 285.496 195.199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 285.496 195.199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bbfd5a2b-225a-4afb-9072-34240ff1aea7")
+		)
+		(instances
+			(project "badge-recon-2025"
+				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
+					(reference "#PWR030")
 					(unit 1)
 				)
 			)
@@ -20461,7 +20401,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/2001132237_Chinocera-HGC0402G0220J500NTEJ_C482483.pdf"
+		(property "Datasheet" ""
 			(at 34.925 172.339 0)
 			(effects
 				(font
@@ -20556,7 +20496,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811151133_Walsin-Tech-Corp-WR06X104JTL_C163843.pdf"
+		(property "Datasheet" ""
 			(at 77.47 258.699 0)
 			(effects
 				(font
@@ -20573,7 +20513,7 @@
 				)
 			)
 		)
-		(property "manf#" "WR06X104JTL"
+		(property "manf#" ""
 			(at 77.47 258.699 0)
 			(effects
 				(font
@@ -20866,7 +20806,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1810261812_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf"
+		(property "Datasheet" ""
 			(at 104.013 50.673 0)
 			(effects
 				(font
@@ -20951,7 +20891,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342"
 			(at 318.77 115.57 0)
 			(effects
 				(font
@@ -20976,6 +20916,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "LCSC#" "C318889"
+			(at 318.77 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -21091,7 +21039,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_PANASONIC-ERJ3GEYJ270V_C403464.pdf"
+		(property "Datasheet" ""
 			(at 118.11 114.3 0)
 			(effects
 				(font
@@ -21317,7 +21265,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/2006011904_Darfon-Elec-C1608NP0121JGTS_C561174.pdf"
+		(property "Datasheet" ""
 			(at 189.357 52.197 0)
 			(effects
 				(font
@@ -21334,7 +21282,7 @@
 				)
 			)
 		)
-		(property "manf#" "C0603C121J5GAC"
+		(property "manf#" ""
 			(at 189.357 52.197 0)
 			(effects
 				(font
@@ -21352,7 +21300,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C561174"
+		(property "LCSC#" "C107035"
 			(at 189.357 52.197 0)
 			(effects
 				(font
@@ -21474,7 +21422,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811151133_Walsin-Tech-Corp-WR06X104JTL_C163843.pdf"
+		(property "Datasheet" ""
 			(at 132.207 82.423 0)
 			(effects
 				(font
@@ -21492,7 +21440,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" "WR06X104JTL"
+		(property "manf#" ""
 			(at 132.207 82.423 0)
 			(effects
 				(font
@@ -21570,7 +21518,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1811082117_YAGEO-RC0603JR-072K2L_C113303.pdf"
+		(property "Datasheet" ""
 			(at 175.514 39.243 0)
 			(effects
 				(font
@@ -21665,7 +21613,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1810261812_Samsung-Electro-Mechanics-CL10A105KB8NNNC_C15849.pdf"
+		(property "Datasheet" ""
 			(at 98.552 26.416 0)
 			(effects
 				(font
@@ -21942,7 +21890,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342"
 			(at 320.04 137.16 0)
 			(effects
 				(font
@@ -21967,6 +21915,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "LCSC#" "C318889"
+			(at 320.04 142.24 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
