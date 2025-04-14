@@ -11467,6 +11467,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC#" "C5149820"
+			(at 348.107 26.543 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "a8e6f530-9ae3-4820-85b5-eca4eb509c6e")
 		)
@@ -12588,7 +12597,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Footprints:JS102011SAQN"
+		(property "Footprint" "Footprints:MSK12C02"
 			(at 97.663 251.968 0)
 			(effects
 				(font
@@ -12614,7 +12623,7 @@
 				)
 			)
 		)
-		(property "LCSC#" "-"
+		(property "LCSC#" "C431540"
 			(at 97.663 251.968 0)
 			(effects
 				(font
@@ -12623,7 +12632,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" "JS102011SAQN"
+		(property "manf#" ""
 			(at 97.663 251.968 0)
 			(effects
 				(font
@@ -13428,7 +13437,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C482832"
+		(property "LCSC#" "C425452"
 			(at 205.232 52.07 0)
 			(effects
 				(font
@@ -13521,7 +13530,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C482832"
+		(property "LCSC#" "C425452"
 			(at 205.359 59.69 0)
 			(effects
 				(font
@@ -15254,6 +15263,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC#" "C7503509"
+			(at 184.15 42.926 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "694cf938-8eb5-4f5f-b5c2-ea2c1316cd72")
 		)
@@ -15698,7 +15716,7 @@
 				)
 			)
 		)
-		(property "Value" "0.5A"
+		(property "Value" "0.75A"
 			(at 51.308 233.8324 0)
 			(effects
 				(font
@@ -15706,7 +15724,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Fuse:Fuse_0805_2012Metric"
+		(property "Footprint" "Fuse:Fuse_0603_1608Metric"
 			(at 51.308 236.22 0)
 			(effects
 				(font
@@ -15732,7 +15750,7 @@
 				)
 			)
 		)
-		(property "manf#" "MFU0805FF00500P100"
+		(property "manf#" ""
 			(at 51.308 236.22 0)
 			(effects
 				(font
@@ -15750,7 +15768,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "-"
+		(property "LCSC#" "C182438"
 			(at 51.308 236.22 0)
 			(effects
 				(font
@@ -16614,7 +16632,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C519403"
+		(property "LCSC#" "C519507 "
 			(at 171.831 74.168 0)
 			(effects
 				(font
@@ -17478,7 +17496,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(uuid "987a4f27-e5bc-422b-abad-644d0bb5a08b")
 		(property "Reference" "L3"
 			(at 210.185 54.102 0)
@@ -17533,7 +17551,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" "CONUFL001-SMD-T "
+		(property "manf#" ""
 			(at 213.487 55.88 0)
 			(effects
 				(font
@@ -17859,7 +17877,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C519403"
+		(property "LCSC#" "C519507 "
 			(at 170.942 35.56 0)
 			(effects
 				(font
@@ -18203,6 +18221,15 @@
 			)
 		)
 		(property "provedor" "MOUSER"
+			(at 180.086 59.69 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C107096"
 			(at 180.086 59.69 0)
 			(effects
 				(font
@@ -18596,6 +18623,15 @@
 			)
 		)
 		(property "provedor" "MOUSER"
+			(at 180.086 52.197 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C107096"
 			(at 180.086 52.197 0)
 			(effects
 				(font
@@ -20690,6 +20726,15 @@
 			)
 		)
 		(property "provedor" "MOUSER"
+			(at 184.658 67.183 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C7503509"
 			(at 184.658 67.183 0)
 			(effects
 				(font
