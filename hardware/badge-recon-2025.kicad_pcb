@@ -19618,7 +19618,7 @@
 	(footprint "Footprints:NFC_Antenna_4T_Crossover_Final"
 		(layer "B.Cu")
 		(uuid "d59bf157-b90d-4bf7-9f57-d8a63191ea7f")
-		(at 132.615 70.17 90)
+		(at 132.7525 71.3875 90)
 		(property "Reference" "L3"
 			(at 3 1 270)
 			(layer "B.SilkS")
@@ -19818,13 +19818,23 @@
 		)
 		(fp_line
 			(start 0 -9.35)
-			(end -0.125 -9)
+			(end 0 -9.125)
 			(stroke
-				(width 0.2)
-				(type default)
+				(width 0.25)
+				(type solid)
 			)
 			(layer "B.Cu")
-			(uuid "aba3f7e9-3581-4706-bfd9-f62b1a0f47b4")
+			(uuid "8cd7d873-8da9-4645-a740-99917e9d9080")
+		)
+		(fp_line
+			(start 0 -9.125)
+			(end -0.175 -8.95)
+			(stroke
+				(width 0.25)
+				(type solid)
+			)
+			(layer "B.Cu")
+			(uuid "40a8a65f-ca9c-4f76-85ca-ade674210925")
 		)
 		(fp_line
 			(start 15.95 -9.075)
@@ -19845,16 +19855,6 @@
 			)
 			(layer "B.Cu")
 			(uuid "badf8769-65e9-4eb9-bcba-8f5990c77110")
-		)
-		(fp_line
-			(start -0.125 -9)
-			(end -0.625 -8.9)
-			(stroke
-				(width 0.2)
-				(type solid)
-			)
-			(layer "B.Cu")
-			(uuid "711c2e11-d71b-411c-8578-c1be4c7317ee")
 		)
 		(fp_line
 			(start 14.45 -8.975)
@@ -19897,6 +19897,16 @@
 			(uuid "a39b7c39-4eae-40f5-a7fd-b90a9797743d")
 		)
 		(fp_line
+			(start -0.175 -8.95)
+			(end -0.425 -8.95)
+			(stroke
+				(width 0.25)
+				(type solid)
+			)
+			(layer "B.Cu")
+			(uuid "711c2e11-d71b-411c-8578-c1be4c7317ee")
+		)
+		(fp_line
 			(start 0.51 -7.79)
 			(end 1 -8.58)
 			(stroke
@@ -19928,10 +19938,10 @@
 		)
 		(fp_line
 			(start -0.1 -7.5)
-			(end -0.775 -7.55)
+			(end -0.3 -7.525)
 			(stroke
-				(width 0.2)
-				(type default)
+				(width 0.25)
+				(type solid)
 			)
 			(layer "B.Cu")
 			(uuid "c0c6eea8-f9cf-44d5-b98e-ac9c41a625e4")
@@ -19940,8 +19950,8 @@
 			(start 0 -7.35)
 			(end -0.1 -7.5)
 			(stroke
-				(width 0.2)
-				(type default)
+				(width 0.25)
+				(type solid)
 			)
 			(layer "B.Cu")
 			(uuid "8a3c2445-7afe-40a6-ab55-db76443a48ce")
@@ -19950,8 +19960,8 @@
 			(start 0 -7)
 			(end 0 -7.35)
 			(stroke
-				(width 0.2)
-				(type default)
+				(width 0.25)
+				(type solid)
 			)
 			(layer "B.Cu")
 			(uuid "18ded0ce-ac8d-4129-a957-6d59aa9a988c")
@@ -23816,22 +23826,6 @@
 		(layer "B.Cu")
 		(net 36)
 		(uuid "debd6a4b-f096-4781-8272-53c65cee5060")
-	)
-	(segment
-		(start 123.809688 73.499563)
-		(end 123.809688 71.445775)
-		(width 0.2)
-		(layer "B.Cu")
-		(net 38)
-		(uuid "048929e8-4125-4a13-9ae9-e0195e803f80")
-	)
-	(segment
-		(start 123.809688 71.445775)
-		(end 123.492565 71.128652)
-		(width 0.2)
-		(layer "B.Cu")
-		(net 38)
-		(uuid "f4dc82b0-3c42-4cb2-904e-1015d9fe3ff8")
 	)
 	(group ""
 		(uuid "d3d17f4e-2877-44b5-9834-0bb7c16e2b4b")

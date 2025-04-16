@@ -1261,25 +1261,23 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "L3"
-				(at -3.302 1.778 0)
+			(property "Reference" "L"
+				(at -1.27 0 90)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
 			(property "Value" "L"
-				(at -2.159 -1.143 0)
+				(at 1.905 0 90)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left)
 				)
 			)
-			(property "Footprint" "Footprints:NFC_Antenna_4T_Crossover_Final"
+			(property "Footprint" ""
 				(at 0 0 0)
 				(effects
 					(font
@@ -1297,33 +1295,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "LCSC#" "-"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "manf#" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "provedor" "Mouser"
+			(property "Description" "Inductor"
 				(at 0 0 0)
 				(effects
 					(font
@@ -6872,12 +6844,6 @@
 		(uuid "15000db2-c08a-4a1c-a109-e1a85cdccf38")
 	)
 	(junction
-		(at 180.086 42.926)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "17e6f515-0ec2-46b1-bee3-3f116d1667f2")
-	)
-	(junction
 		(at 92.456 80.01)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6926,12 +6892,6 @@
 		(uuid "48b82656-987d-4b22-b6b8-ed2c559ae754")
 	)
 	(junction
-		(at 180.086 67.183)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "493a2c90-56c3-4b43-b0a4-40a4d8140184")
-	)
-	(junction
 		(at 127.762 34.29)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6956,12 +6916,6 @@
 		(uuid "5fad4a9a-f41d-4a45-9b91-196b754df9e3")
 	)
 	(junction
-		(at 180.086 56.134)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "658ae651-ee89-4e24-ab00-25dc7898d03b")
-	)
-	(junction
 		(at 189.357 62.484)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6978,6 +6932,18 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6e20fdcb-554f-45f3-a908-32a1be76f9b1")
+	)
+	(junction
+		(at 180.34 56.134)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6e5e67d6-b936-4434-9ffd-cdb894624224")
+	)
+	(junction
+		(at 180.34 42.926)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7ab8fe44-8c74-4d87-acb2-e7eb66c16b44")
 	)
 	(junction
 		(at 63.5 103.124)
@@ -7092,6 +7058,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "ca6ca69b-e931-4144-80f9-cd53c6af7772")
+	)
+	(junction
+		(at 180.34 67.183)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e58b0f94-c90b-4876-b09d-6c547f42e11d")
 	)
 	(junction
 		(at 87.63 102.362)
@@ -7409,7 +7381,7 @@
 	)
 	(wire
 		(pts
-			(xy 175.514 42.926) (xy 180.086 42.926)
+			(xy 175.514 42.926) (xy 180.34 42.926)
 		)
 		(stroke
 			(width 0)
@@ -7669,7 +7641,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.086 62.23) (xy 180.086 67.183)
+			(xy 180.34 64.77) (xy 180.34 67.183)
 		)
 		(stroke
 			(width 0)
@@ -7759,7 +7731,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.086 56.134) (xy 180.086 57.15)
+			(xy 180.34 56.134) (xy 180.34 59.69)
 		)
 		(stroke
 			(width 0)
@@ -8316,6 +8288,16 @@
 			(type default)
 		)
 		(uuid "6013ed44-a081-4e3d-9654-a9c1b5690bdf")
+	)
+	(wire
+		(pts
+			(xy 180.34 42.926) (xy 181.61 42.926)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "607fdd90-7530-4bec-843f-435a531b59c7")
 	)
 	(wire
 		(pts
@@ -9079,7 +9061,7 @@
 	)
 	(wire
 		(pts
-			(xy 189.357 56.134) (xy 180.086 56.134)
+			(xy 189.357 56.134) (xy 180.34 56.134)
 		)
 		(stroke
 			(width 0)
@@ -9289,23 +9271,13 @@
 	)
 	(wire
 		(pts
-			(xy 180.086 54.737) (xy 180.086 56.134)
+			(xy 180.34 52.07) (xy 180.34 56.134)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "bbc22c9c-b7f6-46eb-a286-b3b6e85662ef")
-	)
-	(wire
-		(pts
-			(xy 180.086 42.926) (xy 181.61 42.926)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bbc84186-6693-47e9-813b-b58a240ef661")
 	)
 	(wire
 		(pts
@@ -9859,7 +9831,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.086 56.134) (xy 173.482 56.134)
+			(xy 154.94 56.134) (xy 180.34 56.134)
 		)
 		(stroke
 			(width 0)
@@ -9949,7 +9921,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.086 42.926) (xy 180.086 49.657)
+			(xy 180.34 42.926) (xy 180.34 46.99)
 		)
 		(stroke
 			(width 0)
@@ -9969,7 +9941,7 @@
 	)
 	(wire
 		(pts
-			(xy 182.118 67.183) (xy 180.086 67.183)
+			(xy 182.118 67.183) (xy 180.34 67.183)
 		)
 		(stroke
 			(width 0)
@@ -10049,7 +10021,7 @@
 	)
 	(wire
 		(pts
-			(xy 173.482 56.134) (xy 173.482 56.642)
+			(xy 154.94 56.134) (xy 154.94 59.69)
 		)
 		(stroke
 			(width 0)
@@ -10299,7 +10271,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.086 67.183) (xy 177.673 67.183)
+			(xy 177.673 67.183) (xy 180.34 67.183)
 		)
 		(stroke
 			(width 0)
@@ -13413,7 +13385,7 @@
 				)
 			)
 		)
-		(property "Value" "3.24R"
+		(property "Value" "0.39R"
 			(at 205.232 53.848 90)
 			(effects
 				(font
@@ -13447,7 +13419,7 @@
 				)
 			)
 		)
-		(property "manf#" "RC0603FR-073R4"
+		(property "manf#" ""
 			(at 205.232 52.07 0)
 			(effects
 				(font
@@ -13456,7 +13428,7 @@
 				(hide yes)
 			)
 		)
-		(property "provedor" "LCSC"
+		(property "provedor" ""
 			(at 205.232 52.07 0)
 			(effects
 				(font
@@ -13465,7 +13437,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C425452"
+		(property "LCSC#" ""
 			(at 205.232 52.07 0)
 			(effects
 				(font
@@ -13506,7 +13478,7 @@
 				)
 			)
 		)
-		(property "Value" "3.24R"
+		(property "Value" "0.39R"
 			(at 205.359 61.468 90)
 			(effects
 				(font
@@ -13540,7 +13512,7 @@
 				)
 			)
 		)
-		(property "manf#" "RC0603FR-073R4"
+		(property "manf#" ""
 			(at 205.359 59.69 0)
 			(effects
 				(font
@@ -13549,7 +13521,7 @@
 				(hide yes)
 			)
 		)
-		(property "provedor" "LCSC"
+		(property "provedor" ""
 			(at 205.359 59.69 0)
 			(effects
 				(font
@@ -13558,7 +13530,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C425452"
+		(property "LCSC#" ""
 			(at 205.359 59.69 0)
 			(effects
 				(font
@@ -15239,7 +15211,7 @@
 				)
 			)
 		)
-		(property "Value" "100pF/50V"
+		(property "Value" "63.3pF/50V"
 			(at 190.5 41.402 90)
 			(effects
 				(font
@@ -15273,7 +15245,7 @@
 				)
 			)
 		)
-		(property "manf#" "06035A101JAT4A"
+		(property "manf#" ""
 			(at 184.15 42.926 0)
 			(effects
 				(font
@@ -15282,7 +15254,7 @@
 				(hide yes)
 			)
 		)
-		(property "provedor" "MOUSER"
+		(property "provedor" ""
 			(at 184.15 42.926 0)
 			(effects
 				(font
@@ -15291,7 +15263,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C7503509"
+		(property "LCSC#" ""
 			(at 184.15 42.926 0)
 			(effects
 				(font
@@ -16095,7 +16067,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "120pF"
+		(property "Value" "813.5pF"
 			(at 189.484 61.468 0)
 			(effects
 				(font
@@ -16139,7 +16111,7 @@
 				(hide yes)
 			)
 		)
-		(property "provedor" "LCSC"
+		(property "provedor" ""
 			(at 189.357 59.944 0)
 			(effects
 				(font
@@ -16148,7 +16120,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C107035"
+		(property "LCSC#" ""
 			(at 189.357 59.944 0)
 			(effects
 				(font
@@ -17629,7 +17601,7 @@
 				)
 			)
 		)
-		(property "Value" "160nH"
+		(property "Value" "470nH"
 			(at 170.561 40.5384 90)
 			(effects
 				(font
@@ -17646,7 +17618,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/lcsc/1912111437_TDK-MLJ1608WR16JT000_C434822.pdf"
+		(property "Datasheet" ""
 			(at 170.561 42.926 0)
 			(effects
 				(font
@@ -17663,7 +17635,7 @@
 				)
 			)
 		)
-		(property "manf#" "MLJ1608WR16JT000"
+		(property "manf#" ""
 			(at 170.561 42.926 0)
 			(effects
 				(font
@@ -17672,7 +17644,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C434822"
+		(property "LCSC#" ""
 			(at 170.561 42.926 0)
 			(effects
 				(font
@@ -17681,7 +17653,7 @@
 				(hide yes)
 			)
 		)
-		(property "provedor" "LCSC"
+		(property "provedor" ""
 			(at 170.561 42.926 0)
 			(effects
 				(font
@@ -18188,7 +18160,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 180.086 59.69 0)
+		(at 180.34 62.23 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -18196,7 +18168,7 @@
 		(dnp no)
 		(uuid "ae0ab6ce-ced3-4613-a548-2eb1e1f63b67")
 		(property "Reference" "C26"
-			(at 176.276 58.039 0)
+			(at 176.53 60.579 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18204,8 +18176,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "680pF"
-			(at 180.34 57.912 0)
+		(property "Value" "252.8pF"
+			(at 172.466 63.754 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18214,7 +18186,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 180.086 59.69 0)
+			(at 180.34 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18223,7 +18195,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 180.086 59.69 0)
+			(at 180.34 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18232,24 +18204,15 @@
 			)
 		)
 		(property "Description" ""
-			(at 180.086 59.69 0)
+			(at 180.34 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "manf#" "885012206107"
-			(at 180.086 59.69 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "provedor" "MOUSER"
-			(at 180.086 59.69 0)
+		(property "manf#" ""
+			(at 180.34 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18257,8 +18220,17 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C107096"
-			(at 180.086 59.69 0)
+		(property "provedor" ""
+			(at 180.34 62.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" ""
+			(at 180.34 62.23 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18590,7 +18562,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 180.086 52.197 0)
+		(at 180.34 49.53 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -18598,7 +18570,7 @@
 		(dnp no)
 		(uuid "b3e99aee-c69e-49b4-b75d-f90bc3a30fd9")
 		(property "Reference" "C25"
-			(at 176.276 50.673 0)
+			(at 176.53 48.006 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18606,8 +18578,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "680pF"
-			(at 180.086 53.848 0)
+		(property "Value" "252.8pF"
+			(at 172.466 51.308 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18616,7 +18588,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 180.086 52.197 0)
+			(at 180.34 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18625,7 +18597,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 180.086 52.197 0)
+			(at 180.34 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18634,7 +18606,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 180.086 52.197 0)
+			(at 180.34 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18642,7 +18614,7 @@
 			)
 		)
 		(property "manf#" "885012206107"
-			(at 180.086 52.197 0)
+			(at 180.34 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18651,7 +18623,7 @@
 			)
 		)
 		(property "provedor" "MOUSER"
-			(at 180.086 52.197 0)
+			(at 180.34 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18660,7 +18632,7 @@
 			)
 		)
 		(property "LCSC#" "C107096"
-			(at 180.086 52.197 0)
+			(at 180.34 49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -18992,7 +18964,7 @@
 				)
 			)
 		)
-		(property "Value" "160nH"
+		(property "Value" "470nH"
 			(at 171.958 68.834 90)
 			(effects
 				(font
@@ -19026,7 +18998,7 @@
 				)
 			)
 		)
-		(property "manf#" "MLJ1608WR16JT000"
+		(property "manf#" ""
 			(at 171.958 67.183 0)
 			(effects
 				(font
@@ -19035,7 +19007,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C434822"
+		(property "LCSC#" ""
 			(at 171.958 67.183 0)
 			(effects
 				(font
@@ -19044,7 +19016,7 @@
 				(hide yes)
 			)
 		)
-		(property "provedor" "LCSC"
+		(property "provedor" ""
 			(at 171.958 67.183 0)
 			(effects
 				(font
@@ -19739,7 +19711,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 173.482 56.642 0)
+		(at 154.94 59.69 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -19747,7 +19719,7 @@
 		(dnp no)
 		(uuid "c7f1dbd3-fac2-48c9-8a7d-53e04a62263d")
 		(property "Reference" "#PWR059"
-			(at 173.482 62.992 0)
+			(at 154.94 66.04 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19756,7 +19728,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 173.609 61.0362 0)
+			(at 155.067 64.0842 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19764,7 +19736,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 173.482 56.642 0)
+			(at 154.94 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19773,7 +19745,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 173.482 56.642 0)
+			(at 154.94 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19782,7 +19754,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 173.482 56.642 0)
+			(at 154.94 59.69 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20703,15 +20675,15 @@
 		(dnp no)
 		(uuid "de4f12f1-e4b9-4dc9-a74e-17798d7f44bd")
 		(property "Reference" "C28"
-			(at 188.468 70.485 90)
+			(at 186.436 71.882 90)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "100pF/50V"
-			(at 188.722 68.707 90)
+		(property "Value" "63.3pF/50V"
+			(at 189.738 70.104 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -20744,7 +20716,7 @@
 				)
 			)
 		)
-		(property "manf#" "06035A101JAT4A"
+		(property "manf#" ""
 			(at 184.658 67.183 0)
 			(effects
 				(font
@@ -20753,7 +20725,7 @@
 				(hide yes)
 			)
 		)
-		(property "provedor" "MOUSER"
+		(property "provedor" ""
 			(at 184.658 67.183 0)
 			(effects
 				(font
@@ -20762,7 +20734,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C7503509"
+		(property "LCSC#" ""
 			(at 184.658 67.183 0)
 			(effects
 				(font
@@ -21331,7 +21303,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "120pF"
+		(property "Value" "813.5pF"
 			(at 189.357 50.292 0)
 			(effects
 				(font
@@ -21375,7 +21347,7 @@
 				(hide yes)
 			)
 		)
-		(property "provedor" "LCSC"
+		(property "provedor" ""
 			(at 189.357 52.197 0)
 			(effects
 				(font
@@ -21384,7 +21356,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C107035"
+		(property "LCSC#" ""
 			(at 189.357 52.197 0)
 			(effects
 				(font
