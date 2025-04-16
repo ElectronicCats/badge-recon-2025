@@ -1261,23 +1261,25 @@
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property "Reference" "L"
-				(at -1.27 0 90)
+			(property "Reference" "L3"
+				(at -3.302 1.778 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
 			(property "Value" "L"
-				(at 1.905 0 90)
+				(at -2.159 -1.143 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "Footprints:NFC_Antenna_4T_Crossover_Final"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1295,7 +1297,33 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Inductor"
+			(property "Description" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC#" "-"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "manf#" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "provedor" "Mouser"
 				(at 0 0 0)
 				(effects
 					(font
@@ -17516,7 +17544,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connectors:MOLEX_1661"
+		(property "Footprint" "Footprints:NFC_Antenna_4T_Crossover_Final"
 			(at 213.487 55.88 0)
 			(effects
 				(font
