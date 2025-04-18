@@ -7118,10 +7118,6 @@
 		(uuid "239189db-af7a-48c0-bf6a-813773de4b8d")
 	)
 	(no_connect
-		(at 22.86 274.32)
-		(uuid "242d4c41-132e-4846-942b-f7307948fe03")
-	)
-	(no_connect
 		(at 187.96 267.97)
 		(uuid "2b81c31b-3f3b-4e08-9226-e058354362f9")
 	)
@@ -9368,6 +9364,16 @@
 			(type default)
 		)
 		(uuid "bf969b6c-2d4c-49b0-8650-b69b06fd4663")
+	)
+	(wire
+		(pts
+			(xy 22.86 274.32) (xy 22.86 276.86)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c01bd1aa-90bb-4d65-bc2a-3a6ee30f9a95")
 	)
 	(wire
 		(pts
@@ -22214,6 +22220,70 @@
 			(project "badge-recon-2025"
 				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
 					(reference "#PWR074")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 22.86 276.86 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "fe6b7910-0e26-4a4f-81f8-3169175f7cbd")
+		(property "Reference" "#PWR035"
+			(at 22.86 283.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 22.987 281.2542 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 22.86 276.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 22.86 276.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 22.86 276.86 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "a73ee1f9-ec6f-43d7-9888-4f51ec83c1bc")
+		)
+		(instances
+			(project "badge-recon-2025"
+				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
+					(reference "#PWR035")
 					(unit 1)
 				)
 			)
