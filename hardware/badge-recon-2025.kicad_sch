@@ -15338,6 +15338,14 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC#" "-"
+			(at 294.64 238.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "a3926a91-e45b-4a49-b05a-0039532fe06e")
 		)
@@ -17101,7 +17109,7 @@
 				)
 			)
 		)
-		(property "manf#" "520-271.2-6-37-JTNT"
+		(property "manf#" "XRCGB27M120F3M10R0"
 			(at 28.575 63.627 0)
 			(effects
 				(font
@@ -17119,7 +17127,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C910048"
+		(property "LCSC#" "C338245"
 			(at 28.575 63.627 0)
 			(effects
 				(font
@@ -17820,6 +17828,14 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC#" "-"
+			(at 364.49 189.23 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "92f8e87d-5d79-44ab-87e3-a57bad7a76ff")
 		)
@@ -18121,7 +18137,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" "TC4424AVOA"
+		(property "manf#" "C7498963"
 			(at 327.787 45.339 0)
 			(effects
 				(font
@@ -18624,6 +18640,14 @@
 					(size 1.27 1.27)
 				)
 				(hide yes)
+			)
+		)
+		(property "LCSC#" "C20625731 "
+			(at 20.32 160.02 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(pin "1"
@@ -20502,99 +20526,6 @@
 			(project "badge-recon-2025"
 				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
 					(reference "P1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Small")
-		(at 13.97 170.18 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c5c7bec3-777e-4f90-b279-39c9f8caa81b")
-		(property "Reference" "C11"
-			(at 15.2146 172.593 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "15pF"
-			(at 17.526 172.593 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 13.97 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 13.97 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 13.97 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC#" "C1644"
-			(at 13.97 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "manf#" ""
-			(at 13.97 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "provedor" "LCSC"
-			(at 13.97 170.18 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "011663cc-b496-401f-a320-6c6ccb7525fc")
-		)
-		(pin "2"
-			(uuid "99ce0a57-a7ae-4ca2-befe-ecb323a1ff19")
-		)
-		(instances
-			(project "badge-recon-2025"
-				(path "/d927dcf1-a70e-4351-8ddc-20f742435b21"
-					(reference "C11")
 					(unit 1)
 				)
 			)
