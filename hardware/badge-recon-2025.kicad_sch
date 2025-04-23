@@ -15290,7 +15290,7 @@
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
-		(dnp no)
+		(dnp yes)
 		(fields_autoplaced yes)
 		(uuid "5ad6ad0b-3f20-4685-ba89-51d5c644a557")
 		(property "Reference" "J1"
@@ -18128,7 +18128,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "TC4424AVOA"
+		(property "LCSC#" "C7498963"
 			(at 327.787 45.339 0)
 			(effects
 				(font
@@ -18137,7 +18137,7 @@
 				(hide yes)
 			)
 		)
-		(property "manf#" "C7498963"
+		(property "manf#" "TC4424AVOA"
 			(at 327.787 45.339 0)
 			(effects
 				(font
