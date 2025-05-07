@@ -2,7 +2,7 @@ BOARD_TAG = arduino:mbed_rp2040:pico
 MONITOR_PORT = $(PORT)
 
 compile:
-	arduino-cli compile --fqbn $(BOARD_TAG)
+	arduino-cli compile --fqbn $(BOARD_TAG) --build-path build
 
 upload:
 	arduino-cli upload -p $(MONITOR_PORT) --fqbn $(BOARD_TAG) --verbose
