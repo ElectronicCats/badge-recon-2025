@@ -27,3 +27,18 @@ hardware/**/*.xml
 hardware/**/*.csv
 
 hardware/badge-recon-2025-backups/
+
+# Visual Studio config files
+.vscode/
+
+# macOS folder attributes
+/**/.DS_Store
+
+# Firmware binaries
+/**/build/
+/**/managed_components/
+
+# IDF sdkconfig
+/**/sdkconfig
+/**/sdkconfig.old
+/**/dependencies.lock
