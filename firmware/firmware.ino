@@ -1,5 +1,13 @@
 /**
- I added this text but git doesn't track it
+ * Example detect tags and show their unique ID
+ * Author: Francisco Torres - Electronic Cats - electroniccats.com
+ *
+ *  May 2025
+ *
+ * This code is beerware; if you see me (or any other collaborator
+ * member) at the local, and you've found our code helpful,
+ * please buy us a round!
+ * Distributed as-is; no warranty is given.
  */
 
  #include "Electroniccats_PN7150.h"
