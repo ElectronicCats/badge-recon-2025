@@ -10,11 +10,14 @@
  * Distributed as-is; no warranty is given.
  */
 
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
 #include <SPI.h>
 #include <Wire.h>
+
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <ezButton.h>
 #include "Electroniccats_PN7150.h"
+
 #include "nfc_config.h"
 #include "nfc_controller.h"
 #include "nfc_display.h"
@@ -24,8 +27,15 @@
 #define SCREEN_HEIGHT  32    // OLED display height in pixels
 #define OLED_RESET     -1    // Reset pin (or -1 if sharing Arduino reset pin)
 #define SCREEN_ADDRESS 0x3C  // I2C address of the SSD1306 display
-#define IC2_SDA_PIN 12
-#define IC2_SCL_PIN 13
+#define IC2_SDA_PIN    12
+#define IC2_SCL_PIN    13
+
+// Buttons configuration
+#define BUTTON_UP_PIN 5
+#define BUTTON_DOWN_PIN 4
+#define BUTTON_SELECT_PIN 2
+#define BUTTON_BACK_PIN 1
+#define BUTTON_DEBOUNCE_MS 50
 
 /**
  * @brief Global NFC device interface object
@@ -39,6 +49,14 @@ Electroniccats_PN7150 nfc(PN7150_IRQ, PN7150_VEN, PN7150_ADDR, PN7150);
  * @brief Display object for SSD1306 OLED
  */
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+/**
+ * @brief Button objects for user input
+ */
+ezButton buttonUp(BUTTON_UP_PIN);
+ezButton buttonDown(BUTTON_DOWN_PIN);
+ezButton buttonSelect(BUTTON_SELECT_PIN);
+ezButton buttonBack(BUTTON_BACK_PIN);
 
 /**
  * @brief Arduino setup function
@@ -69,6 +87,11 @@ void setup() {
       delay(1000);
     }
   }
+
+  buttonUp.setDebounceTime(BUTTON_DEBOUNCE_MS);
+  buttonDown.setDebounceTime(BUTTON_DEBOUNCE_MS);
+  buttonSelect.setDebounceTime(BUTTON_DEBOUNCE_MS);
+  buttonBack.setDebounceTime(BUTTON_DEBOUNCE_MS);
 
   // Clear the display buffer
   display.clearDisplay();
