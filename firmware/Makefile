@@ -12,6 +12,7 @@ monitor:
 
 clean:
 	arduino-cli cache clean
+	rm -rf build
 
 wait:
 	sleep 2
