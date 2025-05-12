@@ -221,21 +221,106 @@ void runDetectTags() {
   }
 }
 
-// Placeholder functions for other menu items
 void runDetectReaders() {
   Adafruit_SSD1306* display = displayController.getDisplay();
   display->clearDisplay();
   display->setTextColor(SSD1306_WHITE);
   display->setCursor(0, 0);
   display->println(F("Detect Readers"));
-  display->println(F("Not implemented"));
+  display->println(F("Please wait..."));
   display->display();
 
-  // Wait for back button press
+  // Get global NFC instance - declared in firmware.ino
+  extern Electroniccats_PN7150 nfc;
+
+  // Reset NFC controller first
+  resetNfcController(nfc);
+
+  // Set card emulation mode - required for reader detection
+  if (nfc.setEmulationMode()) {
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Error setting"));
+    display->println(F("emulation mode"));
+    display->display();
+    delay(2000);
+    return;
+  }
+
+  display->clearDisplay();
+  display->setCursor(0, 0);
+  display->println(F("Waiting for reader"));
+  display->println(F("Hold near a phone"));
+  display->println(F("or card reader"));
+  display->println(F("BACK to cancel"));
+  display->display();
+
+  // Animation dots for waiting
+  uint8_t animDots = 0;
+  uint8_t animFrame = 0;
+  unsigned long lastAnimUpdate = 0;
+  boolean readerFound = false;
+
+  // Wait for reader detection or back button
   while (!inputController.isBackPressed()) {
     inputController.update();
+
+    // Update animation every 500ms
+    if (millis() - lastAnimUpdate > 500) {
+      lastAnimUpdate = millis();
+      animDots = (animDots + 1) % 4;
+
+      // Update animation on last line
+      display->fillRect(0, 24, display->width(), 8, SSD1306_BLACK);
+      display->setCursor(0, 24);
+      display->print(F("Scanning"));
+      for (uint8_t i = 0; i < animDots; i++) {
+        display->print(F("."));
+      }
+      display->display();
+
+      // Check for reader detection
+      if (nfc.isReaderDetected()) {
+        readerFound = true;
+        break;
+      }
+    }
+
+    // Small delay to prevent CPU hogging
     delay(10);
   }
+
+  // If a reader was found
+  if (readerFound) {
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Reader detected!"));
+    display->println(F("Handling emulation"));
+    display->display();
+
+    // Handle card emulation
+    nfc.handleCardEmulation();
+
+    // Close communication
+    nfc.closeCommunication();
+
+    // Show completion message
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Reader detected!"));
+    display->println(F("Emulation complete"));
+    display->println(F("Press BACK button"));
+    display->display();
+
+    // Wait for back button to return to menu
+    while (!inputController.isBackPressed()) {
+      inputController.update();
+      delay(10);
+    }
+  }
+
+  // Reset NFC controller back to normal mode
+  resetNfcController(nfc);
 }
 
 void runNdefSend() {
