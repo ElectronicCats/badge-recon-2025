@@ -1,7 +1,7 @@
 /**
  * @file nfc_display.cpp
  * @brief Implementation of NFC tag display functions
- * @author Francisco Torres - Electronic Cats
+ * @author Francisco Torres - Electronic Cats - electroniccats.com
  * @date May 2025
  */
 

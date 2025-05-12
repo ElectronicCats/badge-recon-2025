@@ -1,7 +1,7 @@
 /**
  * @file nfc_config.h
  * @brief Configuration constants for the NFC reader
- * @author Francisco Torres - Electronic Cats
+ * @author Francisco Torres - Electronic Cats - electroniccats.com
  * @date May 2025
  *
  * This file contains all hardware-specific configuration parameters

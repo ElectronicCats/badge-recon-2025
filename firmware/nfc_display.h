@@ -1,7 +1,7 @@
 /**
  * @file nfc_display.h
  * @brief Functions for displaying NFC tag information
- * @author Francisco Torres - Electronic Cats
+ * @author Francisco Torres - Electronic Cats - electroniccats.com
  * @date May 2025
  *
  * This file contains utility functions for formatting and displaying

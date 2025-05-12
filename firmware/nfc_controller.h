@@ -1,7 +1,7 @@
 /**
  * @file nfc_controller.h
  * @brief NFC controller management functions
- * @author Francisco Torres - Electronic Cats
+ * @author Francisco Torres - Electronic Cats - electroniccats.com
  * @date May 2025
  *
  * This file contains functions for initializing and managing the NFC

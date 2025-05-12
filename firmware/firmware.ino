@@ -21,6 +21,9 @@
 #include "nfc_config.h"
 #include "nfc_controller.h"
 #include "nfc_display.h"
+#include "display_controller.h"
+#include "input_controller.h"
+#include "menu_controller.h"
 
 // Display configuration
 #define SCREEN_WIDTH   128   // OLED display width in pixels
@@ -79,8 +82,8 @@ void setup() {
     delay(1000);
   }
 
-  // Initialize OLED display
-  if (!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
+  // Initialize display controller
+  if (!displayController.initialize(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
     while (true) {
       // Don't proceed, loop forever
@@ -88,38 +91,35 @@ void setup() {
     }
   }
 
-  buttonUp.setDebounceTime(BUTTON_DEBOUNCE_MS);
-  buttonDown.setDebounceTime(BUTTON_DEBOUNCE_MS);
-  buttonSelect.setDebounceTime(BUTTON_DEBOUNCE_MS);
-  buttonBack.setDebounceTime(BUTTON_DEBOUNCE_MS);
+  // Initialize input controller with buttons
+  inputController.initialize(
+    BUTTON_UP_PIN,
+    BUTTON_DOWN_PIN,
+    BUTTON_SELECT_PIN,
+    BUTTON_BACK_PIN,
+    BUTTON_DEBOUNCE_MS
+  );
 
-  // Clear the display buffer
-  display.clearDisplay();
-
-  // Set text properties
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 0);
-
-  // Display welcome message
-  display.println(F("NFC Tag"));
-  display.println(F("Detector"));
-
-  // Show the display buffer on the screen
-  display.display();
+  // Initialize menu system
+  menuController.initialize();
+  
+  // Show welcome screen
+  displayController.showWelcomeScreen();
+  delay(2000); // Show welcome screen for 2 seconds
 }
 
 /**
  * @brief Arduino main loop
  *
- * Continuously check for NFC tags and handle them when detected
+ * Handle menu navigation and selected functions
  */
 void loop() {
-  // Process any detected tags
-  handleTagDetection(nfc);
-
-  // Reset controller and prepare for next detection
-  resetNfcController(nfc);
-
-  // Short delay before next detection attempt
-  delay(DETECTION_DELAY_MS);
+  // Update menu state based on button inputs
+  menuController.update();
+  
+  // Render current menu
+  menuController.render();
+  
+  // Short delay for stability
+  // delay(10);
 }

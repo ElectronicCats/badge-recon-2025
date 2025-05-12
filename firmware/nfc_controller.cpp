@@ -1,7 +1,7 @@
 /**
  * @file nfc_controller.cpp
  * @brief Implementation of NFC controller management functions
- * @author Francisco Torres - Electronic Cats
+ * @author Francisco Torres - Electronic Cats - electroniccats.com
  * @date May 2025
  */
 
@@ -32,7 +32,6 @@ bool initializeNfcController(Electroniccats_PN7150& nfc) {
 
   // Start NCI Discovery mode
   nfc.startDiscovery();
-  Serial.println("Waiting for a Card ...");
   return true;
 }
 
