@@ -33,9 +33,45 @@ void DisplayController::showWelcomeScreen() {
 
 void DisplayController::showTagInfo(const String& tagInfo) {
   _display->clearDisplay();
+  _display->setTextSize(1);
   _display->setTextColor(SSD1306_WHITE);
   _display->setCursor(0, 0);
-  _display->println(tagInfo);
+  
+  // Display each line with proper wrapping
+  int startPos = 0;
+  int lineHeight = 8; // Font height for size 1
+  int yPos = 0;
+  int maxCharsPerLine = 21; // Approximate max characters for 128px width
+  
+  // Parse and display each line
+  while (startPos < tagInfo.length() && yPos < _display->height()) {
+    int endPos = tagInfo.indexOf('\n', startPos);
+    if (endPos == -1) {
+      endPos = tagInfo.length();
+    }
+    
+    String line = tagInfo.substring(startPos, endPos);
+    
+    // Handle line wrapping if needed
+    if (line.length() > maxCharsPerLine) {
+      _display->setCursor(0, yPos);
+      _display->println(line.substring(0, maxCharsPerLine));
+      yPos += lineHeight;
+      
+      if (yPos < _display->height()) {
+        _display->setCursor(0, yPos);
+        _display->println(line.substring(maxCharsPerLine));
+        yPos += lineHeight;
+      }
+    } else {
+      _display->setCursor(0, yPos);
+      _display->println(line);
+      yPos += lineHeight;
+    }
+    
+    startPos = endPos + 1;
+  }
+  
   _display->display();
 }
 

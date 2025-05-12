@@ -50,9 +50,7 @@ bool handleTagDetection(Electroniccats_PN7150& nfc) {
   }
 
   // Wait for card removal
-  Serial.println("Remove the Card");
   nfc.waitForTagRemoval();
-  Serial.println("Card removed!");
 
   return true;
 }

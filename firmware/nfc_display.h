@@ -24,10 +24,18 @@
 String getHexRepresentation(const byte* data, const uint32_t numBytes);
 
 /**
- * @brief Display detailed information about detected NFC card(s)
+ * @brief Display detailed information about detected NFC card(s) via Serial
  *
  * @param nfc Reference to NFC controller object
  */
 void displayCardInfo(Electroniccats_PN7150& nfc);
+
+/**
+ * @brief Get NFC tag information as a display-friendly string
+ * 
+ * @param nfc Reference to NFC controller object
+ * @return String Tag information formatted for display
+ */
+String getTagInfoForDisplay(Electroniccats_PN7150& nfc);
 
 #endif  // NFC_DISPLAY_H

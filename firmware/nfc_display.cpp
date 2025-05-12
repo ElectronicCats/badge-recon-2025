@@ -154,3 +154,88 @@ void displayCardInfo(Electroniccats_PN7150& nfc) {
     }
   }
 }
+
+String getTagInfoForDisplay(Electroniccats_PN7150& nfc) {
+  String tagInfo = "";
+  
+  // Add protocol information
+  switch (nfc.remoteDevice.getProtocol()) {
+    case nfc.protocol.T1T:
+      tagInfo += "Type: T1T\n";
+      break;
+    case nfc.protocol.T2T:
+      tagInfo += "Type: T2T\n";
+      break;
+    case nfc.protocol.T3T:
+      tagInfo += "Type: T3T\n";
+      break;
+    case nfc.protocol.ISODEP:
+      tagInfo += "Type: ISODEP\n";
+      break;
+    case nfc.protocol.ISO15693:
+      tagInfo += "Type: ISO15693\n";
+      break;
+    case nfc.protocol.MIFARE:
+      tagInfo += "Type: MIFARE\n";
+      break;
+    default:
+      tagInfo += "Type: Unknown\n";
+      break;
+  }
+
+  // Add technology-specific information
+  switch (nfc.remoteDevice.getModeTech()) {
+    case (nfc.tech.PASSIVE_NFCA): {
+      tagInfo += "Tech: NFC-A\n";
+      String id = getHexRepresentation(nfc.remoteDevice.getNFCID(),
+                                       nfc.remoteDevice.getNFCIDLen());
+      // Truncate ID if it's too long for display
+      if (id.length() > 20) {
+        id = id.substring(0, 18) + "..";
+      }
+      tagInfo += "ID: " + id;
+      break;
+    }
+    
+    case (nfc.tech.PASSIVE_NFCB): {
+      tagInfo += "Tech: NFC-B\n";
+      String sensRes = getHexRepresentation(nfc.remoteDevice.getSensRes(),
+                                           nfc.remoteDevice.getSensResLen());
+      if (sensRes.length() > 20) {
+        sensRes = sensRes.substring(0, 18) + "..";
+      }
+      tagInfo += "SENS: " + sensRes;
+      break;
+    }
+    
+    case (nfc.tech.PASSIVE_NFCF): {
+      tagInfo += "Tech: NFC-F\n";
+      String sensRes = getHexRepresentation(nfc.remoteDevice.getSensRes(),
+                                           nfc.remoteDevice.getSensResLen());
+      if (sensRes.length() > 20) {
+        sensRes = sensRes.substring(0, 18) + "..";
+      }
+      tagInfo += "SENS: " + sensRes + "\n";
+      tagInfo += "BitRate: " + String((nfc.remoteDevice.getBitRate() == 1) ? "212" : "424");
+      break;
+    }
+    
+    case (nfc.tech.PASSIVE_NFCV): {
+      tagInfo += "Tech: NFC-V\n";
+      String id = getHexRepresentation(nfc.remoteDevice.getID(),
+                                       sizeof(nfc.remoteDevice.getID()));
+      if (id.length() > 20) {
+        id = id.substring(0, 18) + "..";
+      }
+      tagInfo += "ID: " + id + "\n";
+      tagInfo += "DSF ID: " + String(nfc.remoteDevice.getDSFID(), HEX);
+      break;
+    }
+    
+    default:
+      tagInfo += "Tech: Unknown";
+      break;
+  }
+
+  return tagInfo;
+}
