@@ -18,12 +18,12 @@
 #include <ezButton.h>
 #include "Electroniccats_PN7150.h"
 
-#include "nfc_config.h"
-#include "nfc_controller.h"
-#include "nfc_display.h"
 #include "display_controller.h"
 #include "input_controller.h"
 #include "menu_controller.h"
+#include "nfc_config.h"
+#include "nfc_controller.h"
+#include "nfc_display.h"
 
 // Display configuration
 #define SCREEN_WIDTH   128   // OLED display width in pixels
@@ -34,10 +34,10 @@
 #define IC2_SCL_PIN    13
 
 // Buttons configuration
-#define BUTTON_UP_PIN 5
-#define BUTTON_DOWN_PIN 4
-#define BUTTON_SELECT_PIN 2
-#define BUTTON_BACK_PIN 1
+#define BUTTON_UP_PIN      5
+#define BUTTON_DOWN_PIN    4
+#define BUTTON_SELECT_PIN  2
+#define BUTTON_BACK_PIN    1
 #define BUTTON_DEBOUNCE_MS 50
 
 /**
@@ -68,9 +68,6 @@ ezButton buttonBack(BUTTON_BACK_PIN);
  */
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
-  while (!Serial) {
-    ;  // Wait for serial port to connect
-  }
 
   Serial.println("Recon Badge 2025");
 
@@ -83,7 +80,8 @@ void setup() {
   }
 
   // Initialize display controller
-  if (!displayController.initialize(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_ADDRESS)) {
+  if (!displayController.initialize(SCREEN_WIDTH, SCREEN_HEIGHT,
+                                    SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
     while (true) {
       // Don't proceed, loop forever
@@ -92,20 +90,15 @@ void setup() {
   }
 
   // Initialize input controller with buttons
-  inputController.initialize(
-    BUTTON_UP_PIN,
-    BUTTON_DOWN_PIN,
-    BUTTON_SELECT_PIN,
-    BUTTON_BACK_PIN,
-    BUTTON_DEBOUNCE_MS
-  );
+  inputController.initialize(BUTTON_UP_PIN, BUTTON_DOWN_PIN, BUTTON_SELECT_PIN,
+                             BUTTON_BACK_PIN, BUTTON_DEBOUNCE_MS);
 
   // Initialize menu system
   menuController.initialize();
-  
+
   // Show welcome screen
   displayController.showWelcomeScreen();
-  delay(2000); // Show welcome screen for 2 seconds
+  delay(2000);  // Show welcome screen for 2 seconds
 }
 
 /**
@@ -116,10 +109,10 @@ void setup() {
 void loop() {
   // Update menu state based on button inputs
   menuController.update();
-  
+
   // Render current menu
   menuController.render();
-  
+
   // Short delay for stability
   // delay(10);
 }
