@@ -186,6 +186,20 @@ void runDetectTags() {
   // Get global NFC instance - declared in firmware.ino
   extern Electroniccats_PN7150 nfc;
 
+  // Reset NFC controller first
+  resetNfcController(nfc);
+
+  // Set card reader/writer mode - required for tag detection
+  if (nfc.setReaderWriterMode()) {
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Error setting"));
+    display->println(F("reader/writer mode"));
+    display->display();
+    delay(2000);
+    return;
+  }
+
   // Use existing tag detection function
   if (handleTagDetection(nfc)) {
     // Show tag info on display
