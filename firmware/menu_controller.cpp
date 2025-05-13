@@ -44,6 +44,10 @@ Menu menus[MENU_COUNT] = {
       {"NDEF Send", MENU_TYPE_FUNCTION, {.function = runNdefSend}},
       {"NDEF Read", MENU_TYPE_FUNCTION, {.function = runNdefRead}}}}};
 
+bool ndefMessageReceived = false;
+int currentRecordIndex = 0;
+int totalRecords = 0;
+
 void MenuController::initialize() {
   _currentMenuId = MENU_MAIN;
   _currentIndex = 0;
@@ -353,19 +357,293 @@ void runNdefSend() {
   }
 }
 
+/**
+ * @brief Callback function called when an NDEF message is received
+ * This function will be called by the NFC library when a message is read
+ */
+void messageReceivedCallback() {
+  Serial.println("NDEF message received!");
+  ndefMessageReceived = true;
+}
+
+// Replace the runNdefRead function
 void runNdefRead() {
   Adafruit_SSD1306* display = displayController.getDisplay();
   display->clearDisplay();
   display->setTextColor(SSD1306_WHITE);
   display->setCursor(0, 0);
   display->println(F("NDEF Read"));
-  display->println(F("Not implemented"));
+  display->println(F("Initializing..."));
   display->display();
 
-  // Wait for back button press
+  // Get global NFC and NDEF message instances
+  extern Electroniccats_PN7150 nfc;
+  extern NdefMessage ndefMessage;
+
+  // Reset the state
+  ndefMessageReceived = false;
+  currentRecordIndex = 0;
+
+  // Reset NFC controller first
+  resetNfcController(nfc);
+
+  // Initialize NDEF message buffer
+  ndefMessage.begin();
+
+  // Register the callback - THIS IS THE KEY CHANGE
+  nfc.setReadMsgCallback(messageReceivedCallback);
+
+  // Set card reader/writer mode
+  if (nfc.setReaderWriterMode()) {
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Error setting"));
+    display->println(F("reader/writer mode"));
+    display->display();
+    delay(2000);
+    return;
+  }
+
+  display->clearDisplay();
+  display->setCursor(0, 0);
+  display->println(F("Waiting for tag"));
+  display->println(F("with NDEF message"));
+  display->println(F("BACK to cancel"));
+  display->display();
+
+  // Animation dots for waiting
+  uint8_t animDots = 0;
+  unsigned long lastAnimUpdate = 0;
+  boolean tagFound = false;
+
+  // Wait for tag detection or back button
   while (!inputController.isBackPressed()) {
     inputController.update();
+
+    // Update animation every 500ms
+    if (millis() - lastAnimUpdate > 500) {
+      lastAnimUpdate = millis();
+      animDots = (animDots + 1) % 4;
+
+      // Update animation on last line
+      display->fillRect(0, 24, display->width(), 8, SSD1306_BLACK);
+      display->setCursor(0, 24);
+      display->print(F("Scanning"));
+      for (uint8_t i = 0; i < animDots; i++) {
+        display->print(F("."));
+      }
+      display->display();
+    }
+
+    // Check for tag detection
+    if (nfc.isTagDetected()) {
+      tagFound = true;
+
+      display->clearDisplay();
+      display->setCursor(0, 0);
+      display->println(F("Tag detected!"));
+      display->println(F("Reading NDEF..."));
+      display->display();
+
+      // Check protocol to ensure it supports NDEF
+      switch (nfc.remoteDevice.getProtocol()) {
+        case nfc.protocol.T1T:
+        case nfc.protocol.T2T:
+        case nfc.protocol.T3T:
+        case nfc.protocol.ISODEP:
+        case nfc.protocol.MIFARE:
+          // Reset the received flag
+          ndefMessageReceived = false;
+
+          // Just call readNdefMessage - callback will be triggered if
+          // successful
+          Serial.println("Waiting for callback");
+          nfc.readNdefMessage();
+          
+          // Wait a moment to see if callback happens
+          delay(500);
+          Serial.println("Timeout!");
+
+          if (ndefMessageReceived) {
+            // Count the total records for navigation
+            countNdefRecords(ndefMessage);
+
+            // Show the first record
+            showNdefRecordWithNavigation(ndefMessage, display,
+                                         currentRecordIndex);
+          } else {
+            display->clearDisplay();
+            display->setCursor(0, 0);
+            display->println(F("No valid NDEF"));
+            display->println(F("message found"));
+            display->display();
+          }
+          break;
+
+        default:
+          display->clearDisplay();
+          display->setCursor(0, 0);
+          display->println(F("Tag doesn't"));
+          display->println(F("support NDEF"));
+          display->display();
+          break;
+      }
+
+      // If we received a message, let the user navigate through records
+      if (ndefMessageReceived) {
+        while (!inputController.isBackPressed()) {
+          inputController.update();
+
+          // Use UP/DOWN buttons to scroll through records
+          if (inputController.isUpPressed() && currentRecordIndex > 0) {
+            currentRecordIndex--;
+            showNdefRecordWithNavigation(ndefMessage, display,
+                                         currentRecordIndex);
+            delay(200);  // Debounce
+          } else if (inputController.isDownPressed() &&
+                     currentRecordIndex < totalRecords - 1) {
+            currentRecordIndex++;
+            showNdefRecordWithNavigation(ndefMessage, display,
+                                         currentRecordIndex);
+            delay(200);  // Debounce
+          }
+
+          delay(10);
+        }
+      } else {
+        // Wait for back button if no message received
+        while (!inputController.isBackPressed()) {
+          inputController.update();
+          delay(10);
+        }
+      }
+
+      break;  // Exit the waiting loop
+    }
+
     delay(10);
+  }
+
+  // If no tag was found, show appropriate message
+  if (!tagFound) {
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Operation canceled"));
+    display->display();
+    delay(1000);
+  }
+
+  // Reset NFC controller
+  resetNfcController(nfc);
+}
+
+/**
+ * @brief Count total NDEF records in the message
+ *
+ * @param ndefMessage Message to count records in
+ */
+void countNdefRecords(NdefMessage& ndefMessage) {
+  totalRecords = 0;
+  NdefRecord record;
+  Serial.println("Counting records...");
+
+  // Count records
+  do {
+    record.create(ndefMessage.getRecord());
+    if (record.isNotEmpty()) {
+      totalRecords++;
+    }
+  // } while (record.isNotEmpty());
+  } while (!record.isNotEmpty());
+
+  Serial.print("Total records: ");
+  Serial.println(totalRecords);
+}
+
+/**
+ * @brief Show NDEF record with navigation UI
+ *
+ * @param ndefMessage NDEF message to display
+ * @param display Pointer to display object
+ * @param recordIndex Index of record to show
+ */
+void showNdefRecordWithNavigation(NdefMessage& ndefMessage,
+                                  Adafruit_SSD1306* display,
+                                  int recordIndex) {
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+
+  // Record navigation header
+  display->setCursor(0, 0);
+  display->print(F("Record "));
+  display->print(recordIndex + 1);
+  display->print(F("/"));
+  display->print(totalRecords);
+
+  // Draw separator line
+  display->drawLine(0, 8, display->width(), 8, SSD1306_WHITE);
+
+  // Skip to the desired record
+  NdefRecord record;
+  for (int i = 0; i <= recordIndex; i++) {
+    record.create(ndefMessage.getRecord());
+  }
+
+  // Display record content
+  display->setCursor(0, 10);
+  displayNdefRecord(record, display);
+
+  // Draw navigation instruction at bottom
+  display->setCursor(0, 24);
+  if (totalRecords > 1) {
+    display->println(F("UP/DOWN:Nav BACK:Exit"));
+  } else {
+    display->println(F("BACK: Return to menu"));
+  }
+
+  display->display();
+}
+
+/**
+ * @brief Display NDEF record information on the OLED
+ *
+ * @param record NdefRecord to display
+ * @param display Pointer to the display object
+ */
+void displayNdefRecord(NdefRecord record, Adafruit_SSD1306* display) {
+  if (record.isEmpty()) {
+    display->println(F("Empty record"));
+    return;
+  }
+
+  switch (record.getType()) {
+    case record.type.WELL_KNOWN_SIMPLE_TEXT:
+      display->println(F("Text:"));
+      display->println(record.getText().substring(0, 20));
+      break;
+
+    case record.type.WELL_KNOWN_SIMPLE_URI:
+      display->println(F("URI:"));
+      display->println(record.getUri().substring(0, 20));
+      break;
+
+    case record.type.MEDIA_VCARD:
+      display->println(F("vCard"));
+      break;
+
+    case record.type.MEDIA_HANDOVER_WIFI:
+      display->println(F("WiFi:"));
+      display->println(record.getWiFiSSID().substring(0, 20));
+      break;
+
+    case record.type.MEDIA_HANDOVER_BT:
+      display->println(F("BT:"));
+      display->println(record.getBluetoothName().substring(0, 20));
+      break;
+
+    default:
+      display->println(F("Unsupported type"));
+      break;
   }
 }
 

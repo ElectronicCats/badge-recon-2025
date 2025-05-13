@@ -9,6 +9,7 @@
 #define MENU_CONTROLLER_H
 
 #include <Arduino.h>
+#include "Electroniccats_PN7150.h"
 #include "display_controller.h"
 #include "input_controller.h"
 
@@ -25,8 +26,8 @@ typedef enum {
 
 // Menu item structure
 typedef struct {
-  const char* name;      // Display name
-  MenuItemType type;     // Type of menu item
+  const char* name;   // Display name
+  MenuItemType type;  // Type of menu item
   union {
     uint8_t submenuId;   // ID of submenu if type is MENU_TYPE_SUBMENU
     void (*function)();  // Function to call if type is MENU_TYPE_FUNCTION
@@ -35,30 +36,30 @@ typedef struct {
 
 // Menu structure
 typedef struct {
-  const char* name;                  // Menu name
-  uint8_t itemCount;                 // Number of items
-  MenuItem items[MAX_MENU_ITEMS];    // Menu items
+  const char* name;                // Menu name
+  uint8_t itemCount;               // Number of items
+  MenuItem items[MAX_MENU_ITEMS];  // Menu items
 } Menu;
 
 class MenuController {
-public:
+ public:
   /**
    * @brief Initialize the menu system
    */
   void initialize();
-  
+
   /**
    * @brief Update menu state based on inputs
    * Should be called in main loop
    */
   void update();
-  
+
   /**
    * @brief Render current menu to display
    */
   void render();
 
-private:
+ private:
   uint8_t _currentMenuId;    // Current menu level
   uint8_t _currentIndex;     // Currently selected item
   uint8_t _scrollOffset;     // Scroll offset for displaying items
@@ -70,7 +71,7 @@ private:
   void navigateDown();
   void navigateSelect();
   void navigateBack();
-  
+
   // Helper functions
   void adjustScroll();
 };
@@ -84,5 +85,9 @@ void runNdefSend();
 void runNdefRead();
 void runMagspoof();
 void showAbout();
+void messageReceivedCallback();
+void countNdefRecords(NdefMessage& ndefMessage);
+void showNdefRecordWithNavigation(NdefMessage& ndefMessage, Adafruit_SSD1306* display, int recordIndex);
+void displayNdefRecord(NdefRecord record, Adafruit_SSD1306* display);
 
-#endif // MENU_CONTROLLER_H
+#endif  // MENU_CONTROLLER_H

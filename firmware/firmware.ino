@@ -61,6 +61,14 @@ ezButton buttonDown(BUTTON_DOWN_PIN);
 ezButton buttonSelect(BUTTON_SELECT_PIN);
 ezButton buttonBack(BUTTON_BACK_PIN);
 
+// Add after the button declarations, around line 51
+
+/**
+ * @brief Global NDEF message object
+ * Used for storing received NDEF messages
+ */
+NdefMessage ndefMessage;
+
 /**
  * @brief Arduino setup function
  *
