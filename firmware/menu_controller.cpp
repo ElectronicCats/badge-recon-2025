@@ -537,6 +537,82 @@ void runNdefRead() {
   resetNfcController(nfc);
 }
 
+void displayRecordInfo(NdefRecord record) {
+  if (record.isEmpty()) {
+    Serial.println("No more records, exiting...");
+    return;
+  }
+
+  uint8_t *payload = record.getPayload();
+  Serial.println("--- NDEF record received:");
+
+  switch (record.getType()) {
+    case record.type.MEDIA_VCARD:
+      Serial.println("vCard:");
+      Serial.println(record.getVCardContent());
+      break;
+
+    case record.type.WELL_KNOWN_SIMPLE_TEXT:
+      Serial.println("\tWell known simple text");
+      Serial.println("\t- Text record: " + record.getText());
+      break;
+
+    case record.type.WELL_KNOWN_SIMPLE_URI:
+      Serial.println("\tWell known simple URI");
+      Serial.print("\t- URI record: ");
+      Serial.println(record.getUri());
+      break;
+
+    case record.type.MEDIA_HANDOVER_WIFI:
+      Serial.println("\tReceived WIFI credentials:");
+      Serial.println("\t- SSID: " + record.getWiFiSSID());
+      Serial.println("\t- Network key: " + record.getWiFiPassword());
+      Serial.println("\t- Authentication type: " + record.getWiFiAuthenticationType());
+      Serial.println("\t- Encryption type: " + record.getWiFiEncryptionType());
+      break;
+
+    case record.type.WELL_KNOWN_HANDOVER_SELECT:
+      Serial.print("\tHandover select version: ");
+      Serial.print(*payload >> 4);
+      Serial.print(".");
+      Serial.println(*payload & 0xF);
+      break;
+
+    case record.type.WELL_KNOWN_HANDOVER_REQUEST:
+      Serial.print("\tHandover request version: ");
+      Serial.print(*payload >> 4);
+      Serial.print(".");
+      Serial.println(*payload & 0xF);
+      break;
+
+    case record.type.MEDIA_HANDOVER_BT:
+      Serial.println("\tBluetooth handover");
+      Serial.println("\t- Bluetooth name: " + record.getBluetoothName());
+      Serial.println("\t- Bluetooth address: " + record.getBluetoothAddress());
+      break;
+
+    case record.type.MEDIA_HANDOVER_BLE:
+      Serial.print("\tBLE Handover");
+      Serial.println("\t- Payload size: " + String(record.getPayloadLength()) + " bytes");
+      Serial.print("\t- Payload = ");
+      Serial.println(getHexRepresentation(record.getPayload(), record.getPayloadLength()));
+      break;
+
+    case record.type.MEDIA_HANDOVER_BLE_SECURE:
+      Serial.print("\tBLE secure Handover");
+      Serial.println("\t- Payload size: " + String(record.getPayloadLength()) + " bytes");
+      Serial.print("\t- Payload = ");
+      Serial.println(getHexRepresentation(record.getPayload(), record.getPayloadLength()));
+      break;
+
+    default:
+      Serial.println("\tUnsupported NDEF record, cannot parse");
+      break;
+  }
+
+  Serial.println("");
+}
+
 /**
  * @brief Count total NDEF records in the message
  *
@@ -547,16 +623,27 @@ void countNdefRecords(NdefMessage& ndefMessage) {
   NdefRecord record;
   Serial.println("Counting records...");
 
+  // message is automatically updated when a new NDEF message is received
+  // only if we call message.begin() in setup()
+  if (ndefMessage.isEmpty()) {
+    Serial.println("--- Provisioned buffer size too small or NDEF message empty");
+    return;
+  }
+
+  Serial.print("NDEF message: ");
+  Serial.println(getHexRepresentation(ndefMessage.getContent(), ndefMessage.getContentLength()));
+
   // Count records
   do {
     record.create(ndefMessage.getRecord());
-    if (record.isNotEmpty()) {
+    // if (record.isNotEmpty()) {
+      displayRecordInfo(record);
       totalRecords++;
-    }
-  // } while (record.isNotEmpty());
-  } while (!record.isNotEmpty());
+    // }
+  } while (record.isNotEmpty());
 
   Serial.print("Total records: ");
+  // totalRecords = 3;
   Serial.println(totalRecords);
 }
 
