@@ -20,7 +20,6 @@
 
 #include "display_controller.h"
 #include "input_controller.h"
-#include "menu_controller.h"
 #include "nfc_config.h"
 #include "nfc_controller.h"
 #include "nfc_display.h"
@@ -40,6 +39,10 @@
 #define BUTTON_BACK_PIN    1
 #define BUTTON_DEBOUNCE_MS 50
 
+// Menu system configuration
+#define MAX_MENU_ITEMS 10   // Maximum items per menu level
+#define DISPLAY_ROWS 3      // Maximum displayed items on screen
+
 /**
  * @brief Global NFC device interface object
  *
@@ -53,27 +56,465 @@ Electroniccats_PN7150 nfc(PN7150_IRQ, PN7150_VEN, PN7150_ADDR, PN7150);
  */
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-/**
- * @brief Button objects for user input
- */
-ezButton buttonUp(BUTTON_UP_PIN);
-ezButton buttonDown(BUTTON_DOWN_PIN);
-ezButton buttonSelect(BUTTON_SELECT_PIN);
-ezButton buttonBack(BUTTON_BACK_PIN);
+// Menu item type
+typedef enum {
+  MENU_TYPE_SUBMENU,  // Has submenu
+  MENU_TYPE_FUNCTION  // Runs a function
+} MenuItemType;
 
-// Add after the button declarations, around line 51
+// Forward declarations of menu action functions
+void runDetectTags();
+void runDetectReaders();
+void runNdefSend();
+void runNdefRead();
+void runMagspoof();
+void showAbout();
+
+// Menu item structure
+typedef struct {
+  const char* name;   // Display name
+  MenuItemType type;  // Type of menu item
+  union {
+    uint8_t submenuId;   // ID of submenu if type is MENU_TYPE_SUBMENU
+    void (*function)();  // Function to call if type is MENU_TYPE_FUNCTION
+  };
+} MenuItem;
+
+// Menu structure
+typedef struct {
+  const char* name;                // Menu name
+  uint8_t itemCount;               // Number of items
+  MenuItem items[MAX_MENU_ITEMS];  // Menu items
+} Menu;
+
+// Menu definitions
+enum {
+  MENU_MAIN = 0,
+  MENU_APPS,
+  MENU_NFC,
+  MENU_COUNT  // Always keep this last
+};
 
 /**
- * @brief Global NDEF message object
- * Used for storing received NDEF messages
+ * @brief Menu controller class
+ * 
+ * Handles menu navigation, rendering, and user interaction
  */
-NdefMessage ndefMessage;
+class MenuController {
+ public:
+  /**
+   * @brief Initialize the menu system
+   */
+  void initialize();
 
-/**
- * @brief Arduino setup function
- *
- * Initialize serial communication and NFC controller
- */
+  /**
+   * @brief Update menu state based on inputs
+   * Should be called in main loop
+   */
+  void update();
+
+  /**
+   * @brief Render current menu to display
+   */
+  void render();
+
+ private:
+  uint8_t _currentMenuId;    // Current menu level
+  uint8_t _currentIndex;     // Currently selected item
+  uint8_t _scrollOffset;     // Scroll offset for displaying items
+  uint8_t _menuStackIds[5];  // Menu navigation history
+  uint8_t _menuStackPos;     // Position in menu history
+
+  // Navigation functions
+  void navigateUp();
+  void navigateDown();
+  void navigateSelect();
+  void navigateBack();
+
+  // Helper functions
+  void adjustScroll();
+};
+
+// Define menus
+Menu menus[MENU_COUNT] = {
+    // Main Menu
+    {"Main Menu",
+     2,
+     {{"Apps", MENU_TYPE_SUBMENU, {.submenuId = MENU_APPS}},
+      {"About", MENU_TYPE_FUNCTION, {.function = showAbout}}}},
+
+    // Apps Menu
+    {"Apps",
+     2,
+     {{"NFC", MENU_TYPE_SUBMENU, {.submenuId = MENU_NFC}},
+      {"Magspoof", MENU_TYPE_FUNCTION, {.function = runMagspoof}}}},
+
+    // NFC Menu
+    {"NFC",
+     4,
+     {{"Detect Tags", MENU_TYPE_FUNCTION, {.function = runDetectTags}},
+      {"Detect Readers", MENU_TYPE_FUNCTION, {.function = runDetectReaders}},
+      {"NDEF Send", MENU_TYPE_FUNCTION, {.function = runNdefSend}},
+      {"NDEF Read", MENU_TYPE_FUNCTION, {.function = runNdefRead}}}}
+};
+
+// Create global menu controller instance
+MenuController menuController;
+
+// MenuController implementation
+void MenuController::initialize() {
+  _currentMenuId = MENU_MAIN;
+  _currentIndex = 0;
+  _scrollOffset = 0;
+  _menuStackPos = 0;
+
+  // Reset menu navigation stack
+  memset(_menuStackIds, 0, sizeof(_menuStackIds));
+}
+
+void MenuController::update() {
+  // Update buttons
+  inputController.update();
+
+  // Handle button presses
+  if (inputController.isUpPressed()) {
+    navigateUp();
+  } else if (inputController.isDownPressed()) {
+    navigateDown();
+  } else if (inputController.isSelectPressed()) {
+    navigateSelect();
+  } else if (inputController.isBackPressed()) {
+    navigateBack();
+  }
+}
+
+void MenuController::render() {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  Menu* currentMenu = &menus[_currentMenuId];
+
+  // Clear display
+  display->clearDisplay();
+
+  // Draw title
+  display->setTextSize(1);
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(currentMenu->name);
+
+  // Draw separator line
+  display->drawLine(0, 8, display->width(), 8, SSD1306_WHITE);
+
+  // Draw menu items
+  for (uint8_t i = 0;
+       i < DISPLAY_ROWS && i + _scrollOffset < currentMenu->itemCount; i++) {
+    uint8_t yPos = 10 + i * 8;
+
+    // Highlight selected item
+    if (i + _scrollOffset == _currentIndex) {
+      display->fillRect(0, yPos - 1, display->width(), 8, SSD1306_WHITE);
+      display->setTextColor(SSD1306_BLACK);
+    } else {
+      display->setTextColor(SSD1306_WHITE);
+    }
+
+    display->setCursor(2, yPos);
+    display->println(currentMenu->items[i + _scrollOffset].name);
+
+    // Draw submenu indicator
+    if (currentMenu->items[i + _scrollOffset].type == MENU_TYPE_SUBMENU) {
+      display->setCursor(display->width() - 6, yPos);
+      display->print(">");
+    }
+  }
+
+  // Draw scroll indicators if necessary
+  if (_scrollOffset > 0) {
+    display->fillTriangle(display->width() - 5, 9, display->width() - 8, 12,
+                          display->width() - 2, 12, SSD1306_WHITE);
+  }
+
+  if (_scrollOffset + DISPLAY_ROWS < currentMenu->itemCount) {
+    display->fillTriangle(display->width() - 5, 31, display->width() - 8, 28,
+                          display->width() - 2, 28, SSD1306_WHITE);
+  }
+
+  display->display();
+}
+
+void MenuController::navigateUp() {
+  if (_currentIndex > 0) {
+    _currentIndex--;
+    adjustScroll();
+  }
+}
+
+void MenuController::navigateDown() {
+  if (_currentIndex < menus[_currentMenuId].itemCount - 1) {
+    _currentIndex++;
+    adjustScroll();
+  }
+}
+
+void MenuController::navigateSelect() {
+  Menu* currentMenu = &menus[_currentMenuId];
+  MenuItem* selectedItem = &currentMenu->items[_currentIndex];
+
+  if (selectedItem->type == MENU_TYPE_SUBMENU) {
+    // Push current menu to stack
+    _menuStackIds[_menuStackPos++] = _currentMenuId;
+
+    // Navigate to submenu
+    _currentMenuId = selectedItem->submenuId;
+    _currentIndex = 0;
+    _scrollOffset = 0;
+  } else if (selectedItem->type == MENU_TYPE_FUNCTION) {
+    // Call the function
+    selectedItem->function();
+  }
+}
+
+void MenuController::navigateBack() {
+  if (_menuStackPos > 0) {
+    // Pop menu from stack
+    _currentMenuId = _menuStackIds[--_menuStackPos];
+    _currentIndex = 0;
+    _scrollOffset = 0;
+  }
+}
+
+void MenuController::adjustScroll() {
+  if (_currentIndex < _scrollOffset) {
+    _scrollOffset = _currentIndex;
+  } else if (_currentIndex >= _scrollOffset + DISPLAY_ROWS) {
+    _scrollOffset = _currentIndex - DISPLAY_ROWS + 1;
+  }
+}
+
+// Menu action functions implementations
+void runDetectTags() {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(F("Detecting tags..."));
+  display->println(F("Place tag near"));
+  display->println(F("the antenna"));
+  display->display();
+
+  // Reset NFC controller first
+  resetNfcController(nfc);
+  delay(2000);
+
+  // Set card reader/writer mode - required for tag detection
+  if (nfc.setReaderWriterMode()) {
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Error setting"));
+    display->println(F("reader/writer mode"));
+    display->display();
+    delay(2000);
+    return;
+  }
+
+  // Use existing tag detection function
+  if (nfc.isTagDetected()) {
+    Serial.println("Tag detected!");
+    // Show tag info on display
+    String tagInfo = getTagInfoForDisplay(nfc);
+
+    // Add instructions to the tag info
+    tagInfo += "\n\nPress BACK button";
+
+    displayController.showTagInfo(tagInfo);
+
+    // Wait for back button instead of using a fixed delay
+    while (!inputController.isBackPressed()) {
+      inputController.update();
+      delay(10);
+    }
+  } else {
+    Serial.println("No tag detected!");
+    display->clearDisplay();
+    display->setTextColor(SSD1306_WHITE);
+    display->setCursor(0, 0);
+    display->println(F("No tag detected"));
+    display->println(F("Press BACK to"));
+    display->println(F("return to menu"));
+    display->display();
+  }
+
+  resetNfcController(nfc);
+
+  // Wait for back button press to return to menu
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+    delay(10);
+  }
+}
+
+void runDetectReaders() {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(F("Detect Readers"));
+  display->println(F("Please wait..."));
+  display->display();
+
+  // Reset NFC controller first
+  resetNfcController(nfc);
+
+  // Set card emulation mode - required for reader detection
+  if (nfc.setEmulationMode()) {
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Error setting"));
+    display->println(F("emulation mode"));
+    display->display();
+    delay(2000);
+    return;
+  }
+
+  display->clearDisplay();
+  display->setCursor(0, 0);
+  display->println(F("Waiting for reader"));
+  display->println(F("Hold near a phone"));
+  display->println(F("or card reader"));
+  display->println(F("BACK to cancel"));
+  display->display();
+
+  // Animation dots for waiting
+  uint8_t animDots = 0;
+  uint8_t animFrame = 0;
+  unsigned long lastAnimUpdate = 0;
+  boolean readerFound = false;
+
+  // Wait for reader detection or back button
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+
+    // Update animation every 500ms
+    if (millis() - lastAnimUpdate > 500) {
+      lastAnimUpdate = millis();
+      animDots = (animDots + 1) % 4;
+
+      // Update animation on last line
+      display->fillRect(0, 24, display->width(), 8, SSD1306_BLACK);
+      display->setCursor(0, 24);
+      display->print(F("Scanning"));
+      for (uint8_t i = 0; i < animDots; i++) {
+        display->print(F("."));
+      }
+      display->display();
+
+      // Check for reader detection
+      if (nfc.isReaderDetected()) {
+        readerFound = true;
+        break;
+      }
+    }
+
+    // Small delay to prevent CPU hogging
+    delay(10);
+  }
+
+  // If a reader was found
+  if (readerFound) {
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Reader detected!"));
+    display->println(F("Handling emulation"));
+    display->display();
+
+    // Handle card emulation
+    nfc.handleCardEmulation();
+
+    // Close communication
+    nfc.closeCommunication();
+
+    // Show completion message
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Reader detected!"));
+    display->println(F("Emulation complete"));
+    display->println(F("Press BACK button"));
+    display->display();
+
+    // Wait for back button to return to menu
+    while (!inputController.isBackPressed()) {
+      inputController.update();
+      delay(10);
+    }
+  }
+
+  // Reset NFC controller back to normal mode
+  resetNfcController(nfc);
+}
+
+void runNdefSend() {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(F("NDEF Send"));
+  display->println(F("Not implemented"));
+  display->display();
+
+  // Wait for back button press
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+    delay(10);
+  }
+}
+
+void runNdefRead() {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(F("NDEF Read"));
+  display->println(F("Not implemented"));
+  display->display();
+
+  // Wait for back button press
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+    delay(10);
+  }
+}
+
+void runMagspoof() {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(F("Magspoof"));
+  display->println(F("Not implemented"));
+  display->display();
+
+  // Wait for back button press
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+    delay(10);
+  }
+}
+
+void showAbout() {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(F("Recon Badge 2025"));
+  display->println(F("by Electronic Cats"));
+  display->display();
+
+  // Wait for back button press
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+    delay(10);
+  }
+}
+
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
 
@@ -109,11 +550,6 @@ void setup() {
   delay(2000);  // Show welcome screen for 2 seconds
 }
 
-/**
- * @brief Arduino main loop
- *
- * Handle menu navigation and selected functions
- */
 void loop() {
   // Update menu state based on button inputs
   menuController.update();
@@ -122,5 +558,5 @@ void loop() {
   menuController.render();
 
   // Short delay for stability
-  // delay(10);
+  delay(10);
 }

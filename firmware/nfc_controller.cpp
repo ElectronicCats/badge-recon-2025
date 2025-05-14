@@ -37,6 +37,7 @@ bool initializeNfcController(Electroniccats_PN7150& nfc) {
 
 bool handleTagDetection(Electroniccats_PN7150& nfc) {
   if (!nfc.isTagDetected()) {
+    Serial.println("No tag detected!");
     return false;
   }
 
