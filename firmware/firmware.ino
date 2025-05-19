@@ -40,8 +40,8 @@
 #define BUTTON_DEBOUNCE_MS 50
 
 // Menu system configuration
-#define MAX_MENU_ITEMS 10   // Maximum items per menu level
-#define DISPLAY_ROWS 3      // Maximum displayed items on screen
+#define MAX_MENU_ITEMS 10  // Maximum items per menu level
+#define DISPLAY_ROWS   3   // Maximum displayed items on screen
 
 /**
  * @brief Global NFC device interface object
@@ -97,7 +97,7 @@ enum {
 
 /**
  * @brief Menu controller class
- * 
+ *
  * Handles menu navigation, rendering, and user interaction
  */
 class MenuController {
@@ -155,8 +155,7 @@ Menu menus[MENU_COUNT] = {
      {{"Detect Tags", MENU_TYPE_FUNCTION, {.function = runDetectTags}},
       {"Detect Readers", MENU_TYPE_FUNCTION, {.function = runDetectReaders}},
       {"NDEF Send", MENU_TYPE_FUNCTION, {.function = runNdefSend}},
-      {"NDEF Read", MENU_TYPE_FUNCTION, {.function = runNdefRead}}}}
-};
+      {"NDEF Read", MENU_TYPE_FUNCTION, {.function = runNdefRead}}}}};
 
 // Create global menu controller instance
 MenuController menuController;
@@ -301,10 +300,6 @@ void runDetectTags() {
   display->println(F("the antenna"));
   display->display();
 
-  // Reset NFC controller first
-  resetNfcController(nfc);
-  delay(2000);
-
   // Set card reader/writer mode - required for tag detection
   if (nfc.setReaderWriterMode()) {
     display->clearDisplay();
@@ -316,11 +311,37 @@ void runDetectTags() {
     return;
   }
 
+  Serial.println("Current mode: " + String(nfc.getMode()));
+  bool tagDetected = false;
+  String tagInfo;
+  for (int i = 0; i < 3; i++) {
+    if (nfc.isTagDetected()) {
+      tagDetected = true;
+      tagInfo = getTagInfoForDisplay(nfc);
+
+      // It can detect multiple cards at the same time if they use the same
+      // protocol
+      if (nfc.remoteDevice.hasMoreTags()) {
+        nfc.activateNextTagDiscovery();
+        Serial.println("Multiple cards are detected!");
+      }
+
+      Serial.println("Remove the Card");
+      nfc.waitForTagRemoval();
+      Serial.println("Card removed!");
+    }
+
+    Serial.println("Restarting...");
+    nfc.reset();
+    Serial.println("Waiting for a Card...");
+    delay(500);
+  }
+
   // Use existing tag detection function
-  if (nfc.isTagDetected()) {
+  if (tagDetected) {
     Serial.println("Tag detected!");
     // Show tag info on display
-    String tagInfo = getTagInfoForDisplay(nfc);
+    // String tagInfo = getTagInfoForDisplay(nfc);
 
     // Add instructions to the tag info
     tagInfo += "\n\nPress BACK button";
@@ -343,7 +364,7 @@ void runDetectTags() {
     display->display();
   }
 
-  resetNfcController(nfc);
+  nfc.reset();
 
   // Wait for back button press to return to menu
   while (!inputController.isBackPressed()) {
@@ -361,8 +382,7 @@ void runDetectReaders() {
   display->println(F("Please wait..."));
   display->display();
 
-  // Reset NFC controller first
-  resetNfcController(nfc);
+  nfc.reset();
 
   // Set card emulation mode - required for reader detection
   if (nfc.setEmulationMode()) {
@@ -518,7 +538,11 @@ void showAbout() {
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
 
+  while (!Serial) {
+    delay(10);
+  }
   Serial.println("Recon Badge 2025");
+  Serial.println("PIN_WIRE_SDA: " + String(IC2_SDA_PIN));
 
   Wire.setSDA(12);
   Wire.setSCL(13);
@@ -527,6 +551,7 @@ void setup() {
   while (!initializeNfcController(nfc)) {
     delay(1000);
   }
+  Serial.println("NFC controller initialized");
 
   // Initialize display controller
   if (!displayController.initialize(SCREEN_WIDTH, SCREEN_HEIGHT,
@@ -537,6 +562,7 @@ void setup() {
       delay(1000);
     }
   }
+  Serial.println("Display initialized");
 
   // Initialize input controller with buttons
   inputController.initialize(BUTTON_UP_PIN, BUTTON_DOWN_PIN, BUTTON_SELECT_PIN,
@@ -551,12 +577,7 @@ void setup() {
 }
 
 void loop() {
-  // Update menu state based on button inputs
-  menuController.update();
-
-  // Render current menu
+  menuController.update();  // Update menu state based on button inputs
   menuController.render();
-
-  // Short delay for stability
   delay(10);
 }

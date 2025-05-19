@@ -1,3 +1,5 @@
+# BOARD_TAG = arduino:mbed_rp2040:pico
+# BOARD_TAG = arduino:mbed:pico
 BOARD_TAG = rp2040:rp2040:rpipico
 MONITOR_PORT = $(PORT)
 
