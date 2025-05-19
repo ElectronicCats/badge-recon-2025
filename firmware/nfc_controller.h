@@ -24,19 +24,4 @@
  */
 bool initializeNfcController(Electroniccats_PN7150& nfc);
 
-/**
- * @brief Handle tag detection process
- *
- * @param nfc Reference to NFC controller object
- * @return bool true if a tag was detected and handled, false otherwise
- */
-bool handleTagDetection(Electroniccats_PN7150& nfc);
-
-/**
- * @brief Reset the NFC controller for next detection cycle
- *
- * @param nfc Reference to NFC controller object
- */
-void resetNfcController(Electroniccats_PN7150& nfc);
-
 #endif  // NFC_CONTROLLER_H

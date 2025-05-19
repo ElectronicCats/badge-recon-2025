@@ -34,30 +34,3 @@ bool initializeNfcController(Electroniccats_PN7150& nfc) {
   nfc.startDiscovery();
   return true;
 }
-
-bool handleTagDetection(Electroniccats_PN7150& nfc) {
-  if (!nfc.isTagDetected()) {
-    Serial.println("No tag detected!");
-    return false;
-  }
-
-  // Display information about detected tag(s)
-  displayCardInfo(nfc);
-
-  // Handle multiple cards with same protocol
-  if (nfc.remoteDevice.hasMoreTags()) {
-    nfc.activateNextTagDiscovery();
-    Serial.println("Multiple cards are detected!");
-  }
-
-  // Wait for card removal
-  nfc.waitForTagRemoval();
-
-  return true;
-}
-
-void resetNfcController(Electroniccats_PN7150& nfc) {
-  Serial.println("Restarting...");
-  nfc.reset();
-  Serial.println("Waiting for a Card...");
-}

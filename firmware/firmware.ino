@@ -154,8 +154,8 @@ Menu menus[MENU_COUNT] = {
      4,
      {{"Detect Tags", MENU_TYPE_FUNCTION, {.function = runDetectTags}},
       {"Detect Readers", MENU_TYPE_FUNCTION, {.function = runDetectReaders}},
-      {"NDEF Send", MENU_TYPE_FUNCTION, {.function = runNdefSend}},
-      {"NDEF Read", MENU_TYPE_FUNCTION, {.function = runNdefRead}}}}};
+      {"Read block", MENU_TYPE_FUNCTION, {.function = runNdefSend}},
+      {"Write block", MENU_TYPE_FUNCTION, {.function = runNdefRead}}}}};
 
 // Create global menu controller instance
 MenuController menuController;
@@ -289,7 +289,6 @@ void MenuController::adjustScroll() {
   }
 }
 
-// Menu action functions implementations
 void runDetectTags() {
   Adafruit_SSD1306* display = displayController.getDisplay();
   display->clearDisplay();
@@ -311,7 +310,6 @@ void runDetectTags() {
     return;
   }
 
-  Serial.println("Current mode: " + String(nfc.getMode()));
   bool tagDetected = false;
   String tagInfo;
   for (int i = 0; i < 3; i++) {
@@ -382,8 +380,6 @@ void runDetectReaders() {
   display->println(F("Please wait..."));
   display->display();
 
-  nfc.reset();
-
   // Set card emulation mode - required for reader detection
   if (nfc.setEmulationMode()) {
     display->clearDisplay();
@@ -414,45 +410,30 @@ void runDetectReaders() {
     inputController.update();
 
     // Update animation every 500ms
-    if (millis() - lastAnimUpdate > 500) {
-      lastAnimUpdate = millis();
-      animDots = (animDots + 1) % 4;
+    // if (millis() - lastAnimUpdate > 500) {
+    //   lastAnimUpdate = millis();
+    //   animDots = (animDots + 1) % 4;
 
-      // Update animation on last line
-      display->fillRect(0, 24, display->width(), 8, SSD1306_BLACK);
-      display->setCursor(0, 24);
-      display->print(F("Scanning"));
-      for (uint8_t i = 0; i < animDots; i++) {
-        display->print(F("."));
-      }
-      display->display();
+    //   // Update animation on last line
+    //   display->fillRect(0, 24, display->width(), 8, SSD1306_BLACK);
+    //   display->setCursor(0, 24);
+    //   display->print(F("Scanning"));
+    //   for (uint8_t i = 0; i < animDots; i++) {
+    //     display->print(F("."));
+    //   }
+    //   display->display();
+    // }
 
-      // Check for reader detection
-      if (nfc.isReaderDetected()) {
-        readerFound = true;
-        break;
-      }
+    if (nfc.isReaderDetected()) {
+      readerFound = true;
+      Serial.println("\nReader detected!");
+      nfc.handleCardEmulation();
+      nfc.closeCommunication();
+      break;
     }
-
-    // Small delay to prevent CPU hogging
-    delay(10);
   }
 
-  // If a reader was found
   if (readerFound) {
-    display->clearDisplay();
-    display->setCursor(0, 0);
-    display->println(F("Reader detected!"));
-    display->println(F("Handling emulation"));
-    display->display();
-
-    // Handle card emulation
-    nfc.handleCardEmulation();
-
-    // Close communication
-    nfc.closeCommunication();
-
-    // Show completion message
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Reader detected!"));
@@ -467,8 +448,7 @@ void runDetectReaders() {
     }
   }
 
-  // Reset NFC controller back to normal mode
-  resetNfcController(nfc);
+  nfc.reset();
 }
 
 void runNdefSend() {
@@ -537,13 +517,6 @@ void showAbout() {
 
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
-
-  while (!Serial) {
-    delay(10);
-  }
-  Serial.println("Recon Badge 2025");
-  Serial.println("PIN_WIRE_SDA: " + String(IC2_SDA_PIN));
-
   Wire.setSDA(12);
   Wire.setSCL(13);
 
