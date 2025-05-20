@@ -671,6 +671,7 @@ void setup() {
   // Show welcome screen
   displayController.showWelcomeScreen();
   delay(2000);  // Show welcome screen for 2 seconds
+  setupMagspoof();
 }
 
 void loop() {

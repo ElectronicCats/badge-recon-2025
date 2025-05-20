@@ -179,12 +179,30 @@ void runMagspoof() {
   }
 }
 
+void setupTracks() {
+  String track1 = "%B123456781234567^LASTNAME/FIRST^YYMMSSSDDDDDDDDDDDDDDDDDDDDDDDDD?";
+  String track2 = ";123456781234567=112220100000000000000?";
+
+  // track1 = decodeURL((char *)track1.c_str());
+  // track2 = decodeURL((char *)track2.c_str());
+
+  // Copy the tracks into the char arrays using strcpy
+  strcpy(tracks[0], track1.c_str());
+  strcpy(tracks[1], track2.c_str());
+
+  Serial.println("Default tracks:");
+  Serial.print("Track 1: ");
+  Serial.println(tracks[0]);
+  Serial.print("Track 2: ");
+  Serial.println(tracks[1]);
+}
+
 void setupMagspoof() {
   pinMode(PIN_A, OUTPUT);
   pinMode(PIN_B, OUTPUT);
   pinMode(L1, OUTPUT);
 
-  Serial.begin(9600);
+  setupTracks();
 
   // blink to show we started up
   blink(L1, 200, 2);
