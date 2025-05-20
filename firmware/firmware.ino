@@ -66,8 +66,8 @@ typedef enum {
 // Forward declarations of menu action functions
 void runDetectTags();
 void runDetectReaders();
-void runNdefSend();
-void runNdefRead();
+void runReadBlock();
+void runWriteBlock();
 void runMagspoof();
 void showAbout();
 
@@ -155,8 +155,8 @@ Menu menus[MENU_COUNT] = {
      4,
      {{"Detect Tags", MENU_TYPE_FUNCTION, {.function = runDetectTags}},
       {"Detect Readers", MENU_TYPE_FUNCTION, {.function = runDetectReaders}},
-      {"Read block", MENU_TYPE_FUNCTION, {.function = runNdefSend}},
-      {"Write block", MENU_TYPE_FUNCTION, {.function = runNdefRead}}}}};
+      {"Read block", MENU_TYPE_FUNCTION, {.function = runReadBlock}},
+      {"Write block", MENU_TYPE_FUNCTION, {.function = runWriteBlock}}}}};
 
 // Create global menu controller instance
 MenuController menuController;
@@ -318,6 +318,13 @@ void runDetectTags() {
       tagDetected = true;
       tagInfo = getTagInfoForDisplay(nfc);
 
+      display->clearDisplay();
+      display->setCursor(0, 0);
+      display->println(F("Tag detected!"));
+      display->println(F("Please remove"));
+      display->println(F("it from the antenna"));
+      display->display();
+
       // It can detect multiple cards at the same time if they use the same
       // protocol
       if (nfc.remoteDevice.hasMoreTags()) {
@@ -336,12 +343,8 @@ void runDetectTags() {
     delay(500);
   }
 
-  // Use existing tag detection function
   if (tagDetected) {
     Serial.println("Tag detected!");
-    // Show tag info on display
-    // String tagInfo = getTagInfoForDisplay(nfc);
-
     // Add instructions to the tag info
     tagInfo += "\n\nPress BACK button";
 
@@ -452,23 +455,90 @@ void runDetectReaders() {
   nfc.reset();
 }
 
-void runNdefSend() {
+void runReadBlock() {
   Adafruit_SSD1306* display = displayController.getDisplay();
   display->clearDisplay();
   display->setTextColor(SSD1306_WHITE);
   display->setCursor(0, 0);
-  display->println(F("NDEF Send"));
-  display->println(F("Not implemented"));
+  display->println(F("Detecting tags..."));
+  display->println(F("Place tag near"));
+  display->println(F("the antenna"));
   display->display();
 
-  // Wait for back button press
+  // Set card reader/writer mode - required for tag detection
+  if (nfc.setReaderWriterMode()) {
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Error setting"));
+    display->println(F("reader/writer mode"));
+    display->display();
+    delay(2000);
+    return;
+  }
+
+  bool tagDetected = false;
+  String tagInfo;
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+    if (nfc.isTagDetected()) {
+      tagDetected = true;
+      tagInfo = getTagInfoForDisplay(nfc);
+
+      // It can detect multiple cards at the same time if they use the same
+      // protocol
+      if (nfc.remoteDevice.hasMoreTags()) {
+        nfc.activateNextTagDiscovery();
+        Serial.println("Multiple cards are detected!");
+      }
+
+      Serial.println("Remove the Card");
+      nfc.waitForTagRemoval();
+      Serial.println("Card removed!");
+    }
+
+    Serial.println("Restarting...");
+    nfc.reset();
+    Serial.println("Waiting for a Card...");
+    delay(500);
+  }
+
+  // Use existing tag detection function
+  if (tagDetected) {
+    Serial.println("Tag detected!");
+    // Show tag info on display
+    // String tagInfo = getTagInfoForDisplay(nfc);
+
+    // Add instructions to the tag info
+    tagInfo += "\n\nPress BACK button";
+
+    displayController.showTagInfo(tagInfo);
+
+    // Wait for back button instead of using a fixed delay
+    while (!inputController.isBackPressed()) {
+      inputController.update();
+      delay(10);
+    }
+  } else {
+    Serial.println("No tag detected!");
+    display->clearDisplay();
+    display->setTextColor(SSD1306_WHITE);
+    display->setCursor(0, 0);
+    display->println(F("No tag detected"));
+    display->println(F("Press BACK to"));
+    display->println(F("return to menu"));
+    display->display();
+  }
+
+  nfc.reset();
+
+  // Wait for back button press to return to menu
   while (!inputController.isBackPressed()) {
     inputController.update();
     delay(10);
   }
 }
 
-void runNdefRead() {
+void runWriteBlock() {
   Adafruit_SSD1306* display = displayController.getDisplay();
   display->clearDisplay();
   display->setTextColor(SSD1306_WHITE);
