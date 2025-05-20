@@ -75,7 +75,10 @@ void runDetectReaders();
 void runReadBlock();
 void runWriteBlock();
 void runMagspoof();
+void runMagspoofSetup();
+void setupTracks(String newTrack1 = "", String newTrack2 = "");
 void showAbout();
+void showMagspoofHelp();
 
 // Menu item structure
 typedef struct {
@@ -99,7 +102,8 @@ enum {
   MENU_MAIN = 0,
   MENU_APPS,
   MENU_NFC,
-  MENU_COUNT  // Always keep this last
+  MENU_MAGSPOOF,
+  MENU_COUNT
 };
 
 /**
@@ -154,7 +158,7 @@ Menu menus[MENU_COUNT] = {
     {"Apps",
      2,
      {{"NFC", MENU_TYPE_SUBMENU, {.submenuId = MENU_NFC}},
-      {"Magspoof", MENU_TYPE_FUNCTION, {.function = runMagspoof}}}},
+      {"Magspoof", MENU_TYPE_SUBMENU, {.submenuId = MENU_MAGSPOOF}}}},
 
     // NFC Menu
     {"NFC",
@@ -162,7 +166,14 @@ Menu menus[MENU_COUNT] = {
      {{"Detect Tags", MENU_TYPE_FUNCTION, {.function = runDetectTags}},
       {"Detect Readers", MENU_TYPE_FUNCTION, {.function = runDetectReaders}},
       {"Read block", MENU_TYPE_FUNCTION, {.function = runReadBlock}},
-      {"Write block", MENU_TYPE_FUNCTION, {.function = runWriteBlock}}}}};
+      {"Write block", MENU_TYPE_FUNCTION, {.function = runWriteBlock}}}},
+      
+    // Magspoof Menu (updated)
+    {"Magspoof",
+     3,
+     {{"Emulate", MENU_TYPE_FUNCTION, {.function = runMagspoof}},
+      {"Setup", MENU_TYPE_FUNCTION, {.function = runMagspoofSetup}},
+      {"Help", MENU_TYPE_FUNCTION, {.function = showMagspoofHelp}}}}};
 
 // Create global menu controller instance
 MenuController menuController;
@@ -392,6 +403,7 @@ void runDetectReaders() {
 
   // Set card emulation mode - required for reader detection
   if (nfc.setEmulationMode()) {
+    Serial.println("Error setting emulation mode!");
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error setting"));
@@ -409,6 +421,9 @@ void runDetectReaders() {
   display->println(F("BACK to cancel"));
   display->display();
 
+  Serial.println("Emulation mode set!");
+  Serial.print("Waiting for a reader...");
+
   // Animation dots for waiting
   uint8_t animDots = 0;
   uint8_t animFrame = 0;
@@ -418,6 +433,7 @@ void runDetectReaders() {
   // Wait for reader detection or back button
   while (!inputController.isBackPressed()) {
     inputController.update();
+    Serial.print(".");
 
     // Update animation every 500ms
     // if (millis() - lastAnimUpdate > 500) {
@@ -456,6 +472,8 @@ void runDetectReaders() {
       inputController.update();
       delay(10);
     }
+  } else {
+    Serial.println("No reader detected!");
   }
 
   nfc.reset();
@@ -612,7 +630,7 @@ void runWriteBlock() {
   display->clearDisplay();
   display->setTextColor(SSD1306_WHITE);
   display->setCursor(0, 0);
-  display->println(F("NDEF Read"));
+  display->println(F("Write block"));
   display->println(F("Not implemented"));
   display->display();
 
@@ -623,6 +641,91 @@ void runWriteBlock() {
   }
 }
 
+void runMagspoofSetup() {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(F("Connect to a PC"));
+  display->println(F("to update the tracks"));
+  display->println(F("Press BACK to"));
+  display->println(F("return to menu"));
+  display->display();
+
+  // Track which track we're currently collecting
+  enum SetupState {
+    WAITING_TRACK1,
+    WAITING_TRACK2,
+    SETUP_COMPLETE
+  };
+  
+  SetupState currentState = WAITING_TRACK1;
+  String track1 = "";
+  String track2 = "";
+  
+  // Time tracking for periodic serial messages
+  unsigned long lastSerialPrompt = 0;
+  const unsigned long serialPromptInterval = 5000; // 5 seconds
+  
+  // Send initial prompt
+  Serial.println("Insert track 1:");
+  lastSerialPrompt = millis();
+  
+  // Main loop - wait for serial input or back button
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+    
+    // Handle serial communication based on current state
+    if (currentState != SETUP_COMPLETE) {
+      // Check if it's time to send a prompt reminder
+      unsigned long currentTime = millis();
+      if (currentTime - lastSerialPrompt >= serialPromptInterval) {
+        if (currentState == WAITING_TRACK1) {
+          Serial.println("Insert track 1:");
+        } else if (currentState == WAITING_TRACK2) {
+          Serial.println("Insert track 2:");
+        }
+        lastSerialPrompt = currentTime;
+      }
+      
+      // Check if serial data is available
+      if (Serial.available() > 0) {
+        String input = Serial.readStringUntil('\n');
+        input.trim(); // Remove any whitespace
+        
+        if (input.length() > 0) {
+          if (currentState == WAITING_TRACK1) {
+            // Save track 1 and move to track 2
+            track1 = input;
+            Serial.println("Track 1 received: " + track1);
+            Serial.println("Insert track 2:");
+            currentState = WAITING_TRACK2;
+            lastSerialPrompt = millis();
+          } else if (currentState == WAITING_TRACK2) {
+            // Save track 2 and complete setup
+            track2 = input;
+            Serial.println("Track 2 received: " + track2);
+            
+            // Update the tracks
+            setupTracks(track1, track2);
+            
+            // Update display to show success
+            display->clearDisplay();
+            display->setCursor(0, 0);
+            display->println(F("Tracks updated!"));
+            display->println(F("Press BACK to return"));
+            display->display();
+            
+            currentState = SETUP_COMPLETE;
+          }
+        }
+      }
+    }
+    
+    delay(10); // Small delay to prevent hogging CPU
+  }
+}
+
 void showAbout() {
   Adafruit_SSD1306* display = displayController.getDisplay();
   display->clearDisplay();
@@ -630,6 +733,23 @@ void showAbout() {
   display->setCursor(0, 0);
   display->println(F("Recon Badge 2025"));
   display->println(F("by Electronic Cats"));
+  display->display();
+
+  // Wait for back button press
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+    delay(10);
+  }
+}
+
+void showMagspoofHelp() {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(F("Emulate magnetic"));
+  display->println(F("stripe or credit"));
+  display->println(F("card"));
   display->display();
 
   // Wait for back button press

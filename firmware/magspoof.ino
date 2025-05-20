@@ -179,12 +179,17 @@ void runMagspoof() {
   }
 }
 
-void setupTracks() {
+void setupTracks(String newTrack1, String newTrack2) {
   String track1 = "%B123456781234567^LASTNAME/FIRST^YYMMSSSDDDDDDDDDDDDDDDDDDDDDDDDD?";
   String track2 = ";123456781234567=112220100000000000000?";
 
-  // track1 = decodeURL((char *)track1.c_str());
-  // track2 = decodeURL((char *)track2.c_str());
+  if (newTrack1.length() > 0) {
+    track1 = newTrack1;
+  }
+
+  if (newTrack2.length() > 0) {
+    track2 = newTrack2;
+  }
 
   // Copy the tracks into the char arrays using strcpy
   strcpy(tracks[0], track1.c_str());
