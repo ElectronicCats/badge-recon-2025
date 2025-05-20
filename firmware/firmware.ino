@@ -20,6 +20,7 @@
 
 #include "display_controller.h"
 #include "input_controller.h"
+#include "magspoof.h"
 #include "nfc_config.h"
 #include "nfc_controller.h"
 #include "nfc_display.h"
@@ -473,22 +474,6 @@ void runNdefRead() {
   display->setTextColor(SSD1306_WHITE);
   display->setCursor(0, 0);
   display->println(F("NDEF Read"));
-  display->println(F("Not implemented"));
-  display->display();
-
-  // Wait for back button press
-  while (!inputController.isBackPressed()) {
-    inputController.update();
-    delay(10);
-  }
-}
-
-void runMagspoof() {
-  Adafruit_SSD1306* display = displayController.getDisplay();
-  display->clearDisplay();
-  display->setTextColor(SSD1306_WHITE);
-  display->setCursor(0, 0);
-  display->println(F("Magspoof"));
   display->println(F("Not implemented"));
   display->display();
 
