@@ -44,6 +44,12 @@
 #define MAX_MENU_ITEMS 10  // Maximum items per menu level
 #define DISPLAY_ROWS   3   // Maximum displayed items on screen
 
+// Read/Write block configuration
+// Block to be read
+#define BLK_NB_MFC 4
+// Default Mifare Classic key
+#define KEY_MFC 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
+
 /**
  * @brief Global NFC device interface object
  *
@@ -455,6 +461,44 @@ void runDetectReaders() {
   nfc.reset();
 }
 
+bool PCD_MIFARE_scenario(void) {
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->setTextColor(SSD1306_WHITE);
+
+  Serial.println("Start reading process...");
+  bool status;
+  unsigned char Resp[256];
+  unsigned char RespSize;
+  /* Authenticate sector 1 with generic keys */
+  unsigned char Auth[] = {0x40, BLK_NB_MFC / 4, 0x10, KEY_MFC};
+  /* Read block 4 */
+  unsigned char Read[] = {0x10, 0x30, BLK_NB_MFC};
+
+  /* Authenticate */
+  status = nfc.readerTagCmd(Auth, sizeof(Auth), Resp, &RespSize);
+  if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
+    Serial.println("Auth error!");
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Auth error!"));
+    display->display();
+    return false;
+  }
+
+  /* Read block */
+  status = nfc.readerTagCmd(Read, sizeof(Read), Resp, &RespSize);
+  if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
+    Serial.print("Error reading sector!");
+    display->clearDisplay();
+    display->setCursor(0, 0);
+    display->println(F("Error reading sector!"));
+    display->display();
+    return false;
+  }
+
+  return true;
+}
+
 void runReadBlock() {
   Adafruit_SSD1306* display = displayController.getDisplay();
   display->clearDisplay();
@@ -477,12 +521,36 @@ void runReadBlock() {
   }
 
   bool tagDetected = false;
-  String tagInfo;
   while (!inputController.isBackPressed()) {
     inputController.update();
+
     if (nfc.isTagDetected()) {
       tagDetected = true;
-      tagInfo = getTagInfoForDisplay(nfc);
+
+      display->clearDisplay();
+      display->setCursor(0, 0);
+      display->println(F("Tag detected!"));
+
+      switch (nfc.remoteDevice.getProtocol()) {
+        case nfc.protocol.MIFARE:
+          Serial.println(" - Found MIFARE card");
+          display->println(F("Starting reading"));
+          display->println(F("process..."));
+          display->display();
+          if (PCD_MIFARE_scenario()) {
+            display->clearDisplay();
+            display->setCursor(0, 0);
+            display->println(F("Successful read!"));
+            display->display();
+          }
+          break;
+
+        default:
+          Serial.println(" - Found a card, but it is not Mifare");
+          display->println(F("but it is not Mifare"));
+          display->display();
+          break;
+      }
 
       // It can detect multiple cards at the same time if they use the same
       // protocol
@@ -490,6 +558,10 @@ void runReadBlock() {
         nfc.activateNextTagDiscovery();
         Serial.println("Multiple cards are detected!");
       }
+
+      display->println(F("Please remove the tag"));
+      display->println(F("from the antenna"));
+      display->display();
 
       Serial.println("Remove the Card");
       nfc.waitForTagRemoval();
@@ -499,19 +571,16 @@ void runReadBlock() {
     Serial.println("Restarting...");
     nfc.reset();
     Serial.println("Waiting for a Card...");
-    delay(500);
+    delay(10);
+
+    if (tagDetected) {
+      break;
+    }
   }
 
-  // Use existing tag detection function
   if (tagDetected) {
-    Serial.println("Tag detected!");
-    // Show tag info on display
-    // String tagInfo = getTagInfoForDisplay(nfc);
-
-    // Add instructions to the tag info
-    tagInfo += "\n\nPress BACK button";
-
-    displayController.showTagInfo(tagInfo);
+    display->println(F("Press BACK button"));
+    display->display();
 
     // Wait for back button instead of using a fixed delay
     while (!inputController.isBackPressed()) {
