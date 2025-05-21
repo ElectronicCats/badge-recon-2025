@@ -56,7 +56,7 @@
  * Creates a global NFC device interface object, attached to pins defined
  * in nfc_config.h and using the specified I2C address
  */
-Electroniccats_PN7150 nfc(PN7150_IRQ, PN7150_VEN, PN7150_ADDR, PN7150);
+Electroniccats_PN7150 nfc(PN7150_IRQ, PN7150_VEN, PN7150_ADDR, PN7150, &Wire);
 
 /**
  * @brief Display object for SSD1306 OLED
@@ -401,8 +401,12 @@ void runDetectReaders() {
   display->println(F("Please wait..."));
   display->display();
 
+  while (!initializeNfcController(nfc)) {
+    delay(1000);
+  }
+
   // Set card emulation mode - required for reader detection
-  if (nfc.setEmulationMode()) {
+  if (!nfc.setEmulationMode()) {
     Serial.println("Error setting emulation mode!");
     display->clearDisplay();
     display->setCursor(0, 0);
@@ -452,9 +456,9 @@ void runDetectReaders() {
 
     if (nfc.isReaderDetected()) {
       readerFound = true;
-      Serial.println("\nReader detected!");
       nfc.handleCardEmulation();
       nfc.closeCommunication();
+      Serial.println("\nReader detected!");
       break;
     }
   }
@@ -764,12 +768,6 @@ void setup() {
   Wire.setSDA(12);
   Wire.setSCL(13);
 
-  // Initialize NFC controller - retry if fails
-  while (!initializeNfcController(nfc)) {
-    delay(1000);
-  }
-  Serial.println("NFC controller initialized");
-
   // Initialize display controller
   if (!displayController.initialize(SCREEN_WIDTH, SCREEN_HEIGHT,
                                     SCREEN_ADDRESS)) {
@@ -792,6 +790,12 @@ void setup() {
   displayController.showWelcomeScreen();
   delay(2000);  // Show welcome screen for 2 seconds
   setupMagspoof();
+
+  // Initialize NFC controller - retry if fails
+  while (!initializeNfcController(nfc)) {
+    delay(1000);
+  }
+  Serial.println("NFC controller initialized");
 }
 
 void loop() {
