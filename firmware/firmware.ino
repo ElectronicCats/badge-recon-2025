@@ -98,13 +98,7 @@ typedef struct {
 } Menu;
 
 // Menu definitions
-enum {
-  MENU_MAIN = 0,
-  MENU_APPS,
-  MENU_NFC,
-  MENU_MAGSPOOF,
-  MENU_COUNT
-};
+enum { MENU_MAIN = 0, MENU_APPS, MENU_NFC, MENU_MAGSPOOF, MENU_COUNT };
 
 /**
  * @brief Menu controller class
@@ -167,7 +161,7 @@ Menu menus[MENU_COUNT] = {
       {"Detect Readers", MENU_TYPE_FUNCTION, {.function = runDetectReaders}},
       {"Read block", MENU_TYPE_FUNCTION, {.function = runReadBlock}},
       {"Write block", MENU_TYPE_FUNCTION, {.function = runWriteBlock}}}},
-      
+
     // Magspoof Menu (updated)
     {"Magspoof",
      3,
@@ -657,28 +651,24 @@ void runMagspoofSetup() {
   display->display();
 
   // Track which track we're currently collecting
-  enum SetupState {
-    WAITING_TRACK1,
-    WAITING_TRACK2,
-    SETUP_COMPLETE
-  };
-  
+  enum SetupState { WAITING_TRACK1, WAITING_TRACK2, SETUP_COMPLETE };
+
   SetupState currentState = WAITING_TRACK1;
   String track1 = "";
   String track2 = "";
-  
+
   // Time tracking for periodic serial messages
   unsigned long lastSerialPrompt = 0;
-  const unsigned long serialPromptInterval = 5000; // 5 seconds
-  
+  const unsigned long serialPromptInterval = 5000;  // 5 seconds
+
   // Send initial prompt
   Serial.println("Insert track 1:");
   lastSerialPrompt = millis();
-  
+
   // Main loop - wait for serial input or back button
   while (!inputController.isBackPressed()) {
     inputController.update();
-    
+
     // Handle serial communication based on current state
     if (currentState != SETUP_COMPLETE) {
       // Check if it's time to send a prompt reminder
@@ -691,12 +681,12 @@ void runMagspoofSetup() {
         }
         lastSerialPrompt = currentTime;
       }
-      
+
       // Check if serial data is available
       if (Serial.available() > 0) {
         String input = Serial.readStringUntil('\n');
-        input.trim(); // Remove any whitespace
-        
+        input.trim();  // Remove any whitespace
+
         if (input.length() > 0) {
           if (currentState == WAITING_TRACK1) {
             // Save track 1 and move to track 2
@@ -709,24 +699,24 @@ void runMagspoofSetup() {
             // Save track 2 and complete setup
             track2 = input;
             Serial.println("Track 2 received: " + track2);
-            
+
             // Update the tracks
             setupTracks(track1, track2);
-            
+
             // Update display to show success
             display->clearDisplay();
             display->setCursor(0, 0);
             display->println(F("Tracks updated!"));
             display->println(F("Press BACK to return"));
             display->display();
-            
+
             currentState = SETUP_COMPLETE;
           }
         }
       }
     }
-    
-    delay(10); // Small delay to prevent hogging CPU
+
+    delay(10);  // Small delay to prevent hogging CPU
   }
 }
 
@@ -788,11 +778,26 @@ void setup() {
 
   // Show welcome screen
   displayController.showWelcomeScreen();
-  delay(2000);  // Show welcome screen for 2 seconds
+  while (true) {
+    inputController.update();
+    if (inputController.isUpPressed() || inputController.isDownPressed() ||
+        inputController.isSelectPressed() || inputController.isBackPressed()) {
+      break;
+    }
+    delay(10);  // Small delay to prevent hogging CPU
+  }
   setupMagspoof();
 
   // Initialize NFC controller - retry if fails
   while (!initializeNfcController(nfc)) {
+    Adafruit_SSD1306* display = displayController.getDisplay();
+    display->clearDisplay();
+    display->setTextColor(SSD1306_WHITE);
+    display->setCursor(0, 0);
+    display->println(F("NFC controller"));
+    display->println(F("initialization"));
+    display->println(F("failed!"));
+    display->display();
     delay(1000);
   }
   Serial.println("NFC controller initialized");
