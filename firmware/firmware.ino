@@ -168,14 +168,13 @@ Menu menus[MENU_COUNT] = {
       {"Read block", MENU_TYPE_FUNCTION, {.function = runReadBlock}},
       {"Write block", MENU_TYPE_FUNCTION, {.function = runWriteBlock}}}},
 
-    // Magspoof Menu (updated)
+    // Magspoof Menu
     {"Magspoof",
      3,
      {{"Emulate", MENU_TYPE_FUNCTION, {.function = runMagspoof}},
       {"Setup", MENU_TYPE_FUNCTION, {.function = runMagspoofSetup}},
       {"Help", MENU_TYPE_FUNCTION, {.function = showMagspoofHelp}}}}};
 
-// Create global menu controller instance
 MenuController menuController;
 
 // MenuController implementation
@@ -190,10 +189,8 @@ void MenuController::initialize() {
 }
 
 void MenuController::update() {
-  // Update buttons
   inputController.update();
 
-  // Handle button presses
   if (inputController.isUpPressed()) {
     navigateUp();
   } else if (inputController.isDownPressed()) {
@@ -209,7 +206,6 @@ void MenuController::render() {
   Adafruit_SSD1306* display = displayController.getDisplay();
   Menu* currentMenu = &menus[_currentMenuId];
 
-  // Clear display
   display->clearDisplay();
 
   // Draw title
@@ -285,7 +281,6 @@ void MenuController::navigateSelect() {
     _currentIndex = 0;
     _scrollOffset = 0;
   } else if (selectedItem->type == MENU_TYPE_FUNCTION) {
-    // Call the function
     selectedItem->function();
   }
 }
@@ -318,19 +313,20 @@ void runDetectTags() {
   display->display();
 
   // Set card reader/writer mode - required for tag detection
-  if (nfc.setReaderWriterMode()) {
+  if (!nfc.setReaderWriterMode()) {
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error setting"));
     display->println(F("reader/writer mode"));
     display->display();
     delay(2000);
-    return;
+    // return;
   }
 
   bool tagDetected = false;
   String tagInfo;
-  for (int i = 0; i < 3; i++) {
+  while (!inputController.isBackPressed()) {
+    inputController.update();
     if (nfc.isTagDetected()) {
       tagDetected = true;
       tagInfo = getTagInfoForDisplay(nfc);
@@ -338,8 +334,8 @@ void runDetectTags() {
       display->clearDisplay();
       display->setCursor(0, 0);
       display->println(F("Tag detected!"));
-      display->println(F("Please remove"));
-      display->println(F("it from the antenna"));
+      display->println(F("Please remove it"));
+      display->println(F("from the antenna"));
       display->display();
 
       // It can detect multiple cards at the same time if they use the same
@@ -357,7 +353,12 @@ void runDetectTags() {
     Serial.println("Restarting...");
     nfc.reset();
     Serial.println("Waiting for a Card...");
-    delay(500);
+
+    if (tagDetected) {
+      break;
+    }
+
+    delay(10);
   }
 
   if (tagDetected) {
@@ -414,7 +415,7 @@ void runDetectReaders() {
     display->println(F("emulation mode"));
     display->display();
     delay(2000);
-    return;
+    // return;
   }
 
   display->clearDisplay();
@@ -437,22 +438,7 @@ void runDetectReaders() {
   // Wait for reader detection or back button
   while (!inputController.isBackPressed()) {
     inputController.update();
-    Serial.print(".");
-
-    // Update animation every 500ms
-    // if (millis() - lastAnimUpdate > 500) {
-    //   lastAnimUpdate = millis();
-    //   animDots = (animDots + 1) % 4;
-
-    //   // Update animation on last line
-    //   display->fillRect(0, 24, display->width(), 8, SSD1306_BLACK);
-    //   display->setCursor(0, 24);
-    //   display->print(F("Scanning"));
-    //   for (uint8_t i = 0; i < animDots; i++) {
-    //     display->print(F("."));
-    //   }
-    //   display->display();
-    // }
+    // Serial.print(".");
 
     if (nfc.isReaderDetected()) {
       readerFound = true;
@@ -532,14 +518,14 @@ void runReadBlock() {
   display->display();
 
   // Set card reader/writer mode - required for tag detection
-  if (nfc.setReaderWriterMode()) {
+  if (!nfc.setReaderWriterMode()) {
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error setting"));
     display->println(F("reader/writer mode"));
     display->display();
     delay(2000);
-    return;
+    // return;
   }
 
   bool tagDetected = false;
@@ -604,7 +590,6 @@ void runReadBlock() {
     display->println(F("Press BACK button"));
     display->display();
 
-    // Wait for back button instead of using a fixed delay
     while (!inputController.isBackPressed()) {
       inputController.update();
       delay(10);
@@ -622,7 +607,6 @@ void runReadBlock() {
 
   nfc.reset();
 
-  // Wait for back button press to return to menu
   while (!inputController.isBackPressed()) {
     inputController.update();
     delay(10);
@@ -638,7 +622,6 @@ void runWriteBlock() {
   display->println(F("Not implemented"));
   display->display();
 
-  // Wait for back button press
   while (!inputController.isBackPressed()) {
     inputController.update();
     delay(10);
@@ -656,7 +639,6 @@ void runMagspoofSetup() {
   display->println(F("return to menu"));
   display->display();
 
-  // Track which track we're currently collecting
   enum SetupState { WAITING_TRACK1, WAITING_TRACK2, SETUP_COMPLETE };
 
   SetupState currentState = WAITING_TRACK1;
@@ -671,13 +653,10 @@ void runMagspoofSetup() {
   Serial.println("Insert track 1:");
   lastSerialPrompt = millis();
 
-  // Main loop - wait for serial input or back button
   while (!inputController.isBackPressed()) {
     inputController.update();
 
-    // Handle serial communication based on current state
     if (currentState != SETUP_COMPLETE) {
-      // Check if it's time to send a prompt reminder
       unsigned long currentTime = millis();
       if (currentTime - lastSerialPrompt >= serialPromptInterval) {
         if (currentState == WAITING_TRACK1) {
@@ -688,7 +667,6 @@ void runMagspoofSetup() {
         lastSerialPrompt = currentTime;
       }
 
-      // Check if serial data is available
       if (Serial.available() > 0) {
         String input = Serial.readStringUntil('\n');
         input.trim();  // Remove any whitespace
@@ -706,10 +684,8 @@ void runMagspoofSetup() {
             track2 = input;
             Serial.println("Track 2 received: " + track2);
 
-            // Update the tracks
             setupTracks(track1, track2);
 
-            // Update display to show success
             display->clearDisplay();
             display->setCursor(0, 0);
             display->println(F("Tracks updated!"));
@@ -722,7 +698,7 @@ void runMagspoofSetup() {
       }
     }
 
-    delay(10);  // Small delay to prevent hogging CPU
+    delay(10);
   }
 }
 
@@ -732,6 +708,8 @@ void showAbout() {
   display->setTextColor(SSD1306_WHITE);
   display->setCursor(0, 0);
   display->println(F("Recon Badge 2025"));
+  display->println(F(""));
+  display->println(F("With love from Mexico"));
   display->println(F("by Electronic Cats"));
   display->display();
 
@@ -764,7 +742,6 @@ void setup() {
   Wire.setSDA(12);
   Wire.setSCL(13);
 
-  // Initialize display controller
   if (!displayController.initialize(SCREEN_WIDTH, SCREEN_HEIGHT,
                                     SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
@@ -775,14 +752,11 @@ void setup() {
   }
   Serial.println("Display initialized");
 
-  // Initialize input controller with buttons
   inputController.initialize(BUTTON_UP_PIN, BUTTON_DOWN_PIN, BUTTON_SELECT_PIN,
                              BUTTON_BACK_PIN, BUTTON_DEBOUNCE_MS);
 
-  // Initialize menu system
   menuController.initialize();
 
-  // Show welcome screen
   displayController.showWelcomeScreen();
   while (true) {
     inputController.update();
@@ -790,11 +764,10 @@ void setup() {
         inputController.isSelectPressed() || inputController.isBackPressed()) {
       break;
     }
-    delay(10);  // Small delay to prevent hogging CPU
+    delay(10);
   }
   setupMagspoof();
 
-  // Initialize NFC controller - retry if fails
   while (!initializeNfcController(nfc)) {
     Adafruit_SSD1306* display = displayController.getDisplay();
     display->clearDisplay();
@@ -814,7 +787,7 @@ void setup() {
     Serial.println("Failed to initialize preferences");
   }
 
-  int counter = preferences.getInt("counter", 1); // default to 1
+  int counter = preferences.getInt("counter", 1);  // default to 1
   Serial.print("Reboot count: ");
   Serial.println(counter);
   counter++;

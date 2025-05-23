@@ -23,9 +23,9 @@
 */
 void blink(int pin, int msdelay, int times) {
   for (int i = 0; i < times; i++) {
-    digitalWrite(pin, HIGH);
+    // digitalWrite(pin, HIGH);
     delay(msdelay);
-    digitalWrite(pin, LOW);
+    // digitalWrite(pin, LOW);
     delay(msdelay);
   }
 }
@@ -205,7 +205,7 @@ void setupTracks(String newTrack1, String newTrack2) {
 void setupMagspoof() {
   pinMode(PIN_A, OUTPUT);
   pinMode(PIN_B, OUTPUT);
-  pinMode(L1, OUTPUT);
+  // pinMode(L1, OUTPUT);
 
   setupTracks();
 
