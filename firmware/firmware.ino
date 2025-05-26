@@ -312,15 +312,7 @@ void runDetectTags() {
   display->display();
 
   // Set card reader/writer mode - required for tag detection
-  if (!nfc.setReaderWriterMode()) {
-    display->clearDisplay();
-    display->setCursor(0, 0);
-    display->println(F("Error setting"));
-    display->println(F("reader/writer mode"));
-    display->display();
-    delay(2000);
-    // return;
-  }
+  nfc.setReaderWriterMode();
 
   bool tagDetected = false;
   String tagInfo;
@@ -341,17 +333,12 @@ void runDetectTags() {
       // protocol
       if (nfc.remoteDevice.hasMoreTags()) {
         nfc.activateNextTagDiscovery();
-        Serial.println("Multiple cards are detected!");
       }
 
-      Serial.println("Remove the Card");
       nfc.waitForTagRemoval();
-      Serial.println("Card removed!");
     }
 
-    Serial.println("Restarting...");
     nfc.reset();
-    Serial.println("Waiting for a Card...");
 
     if (tagDetected) {
       break;
@@ -361,7 +348,6 @@ void runDetectTags() {
   }
 
   if (tagDetected) {
-    Serial.println("Tag detected!");
     // Add instructions to the tag info
     tagInfo += "\n\nPress BACK button";
 
@@ -373,7 +359,6 @@ void runDetectTags() {
       delay(10);
     }
   } else {
-    Serial.println("No tag detected!");
     display->clearDisplay();
     display->setTextColor(SSD1306_WHITE);
     display->setCursor(0, 0);
@@ -406,16 +391,7 @@ void runDetectReaders() {
   }
 
   // Set card emulation mode - required for reader detection
-  if (!nfc.setEmulationMode()) {
-    Serial.println("Error setting emulation mode!");
-    display->clearDisplay();
-    display->setCursor(0, 0);
-    display->println(F("Error setting"));
-    display->println(F("emulation mode"));
-    display->display();
-    delay(2000);
-    // return;
-  }
+  nfc.setEmulationMode();
 
   display->clearDisplay();
   display->setCursor(0, 0);
@@ -424,9 +400,6 @@ void runDetectReaders() {
   display->println(F("or card reader"));
   display->println(F("BACK to cancel"));
   display->display();
-
-  Serial.println("Emulation mode set!");
-  Serial.print("Waiting for a reader...");
 
   // Animation dots for waiting
   uint8_t animDots = 0;
@@ -437,13 +410,11 @@ void runDetectReaders() {
   // Wait for reader detection or back button
   while (!inputController.isBackPressed()) {
     inputController.update();
-    // Serial.print(".");
 
     if (nfc.isReaderDetected()) {
       readerFound = true;
       nfc.handleCardEmulation();
       nfc.closeCommunication();
-      Serial.println("\nReader detected!");
       break;
     }
   }
@@ -461,8 +432,6 @@ void runDetectReaders() {
       inputController.update();
       delay(10);
     }
-  } else {
-    Serial.println("No reader detected!");
   }
 
   nfc.reset();
@@ -472,7 +441,6 @@ bool mifare_read_block(void) {
   Adafruit_SSD1306* display = displayController.getDisplay();
   display->setTextColor(SSD1306_WHITE);
 
-  Serial.println("Start reading process...");
   bool status;
   unsigned char Resp[256];
   unsigned char RespSize;
@@ -484,7 +452,6 @@ bool mifare_read_block(void) {
   /* Authenticate */
   status = nfc.readerTagCmd(Auth, sizeof(Auth), Resp, &RespSize);
   if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
-    Serial.println("Auth error!");
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Auth error!"));
@@ -495,7 +462,6 @@ bool mifare_read_block(void) {
   /* Read block */
   status = nfc.readerTagCmd(Read, sizeof(Read), Resp, &RespSize);
   if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
-    Serial.print("Error reading sector!");
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error reading sector!"));
@@ -510,7 +476,6 @@ bool mifare_read_write_block(void) {
   Adafruit_SSD1306* display = displayController.getDisplay();
   display->setTextColor(SSD1306_WHITE);
 
-  Serial.println("Start reading process...");
   bool status;
   unsigned char Resp[256];
   unsigned char RespSize;
@@ -526,7 +491,6 @@ bool mifare_read_write_block(void) {
   status = nfc.readerTagCmd(Auth, sizeof(Auth), Resp, &RespSize);
   // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
   if (false) {
-    Serial.println("Auth error!");
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Auth error!"));
@@ -538,7 +502,6 @@ bool mifare_read_write_block(void) {
   status = nfc.readerTagCmd(Read, sizeof(Read), Resp, &RespSize);
   // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
   if (false) {
-    Serial.print("Error reading sector!");
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error reading sector!"));
@@ -550,7 +513,6 @@ bool mifare_read_write_block(void) {
   status = nfc.readerTagCmd(WritePart1, sizeof(WritePart1), Resp, &RespSize);
   // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != ChipWriteAck)) {
   if (false) {
-    Serial.print("Error writing block!");
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error writing block!"));
@@ -561,7 +523,6 @@ bool mifare_read_write_block(void) {
   status = nfc.readerTagCmd(WritePart2, sizeof(WritePart2), Resp, &RespSize);
   // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != ChipWriteAck)) {
   if (false) {
-    Serial.print("Error writing block!");
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error writing block!"));
@@ -573,7 +534,6 @@ bool mifare_read_write_block(void) {
   status = nfc.readerTagCmd(Read, sizeof(Read), Resp, &RespSize);
   // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
   if (false) {
-    Serial.print("Error reading block!");
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error reading block!"));
@@ -596,15 +556,7 @@ void runReadBlock() {
   display->display();
 
   // Set card reader/writer mode - required for tag detection
-  if (!nfc.setReaderWriterMode()) {
-    display->clearDisplay();
-    display->setCursor(0, 0);
-    display->println(F("Error setting"));
-    display->println(F("reader/writer mode"));
-    display->display();
-    delay(2000);
-    // return;
-  }
+  nfc.setReaderWriterMode();
 
   bool tagDetected = false;
   while (!inputController.isBackPressed()) {
@@ -619,7 +571,6 @@ void runReadBlock() {
 
       switch (nfc.remoteDevice.getProtocol()) {
         case nfc.protocol.MIFARE:
-          Serial.println(" - Found MIFARE card");
           display->println(F("Starting reading"));
           display->println(F("process..."));
           display->display();
@@ -632,7 +583,6 @@ void runReadBlock() {
           break;
 
         default:
-          Serial.println(" - Found a card, but it is not Mifare");
           display->println(F("but it is not Mifare"));
           display->display();
           break;
@@ -642,21 +592,16 @@ void runReadBlock() {
       // protocol
       if (nfc.remoteDevice.hasMoreTags()) {
         nfc.activateNextTagDiscovery();
-        Serial.println("Multiple cards are detected!");
       }
 
       display->println(F("Please remove the tag"));
       display->println(F("from the antenna"));
       display->display();
 
-      Serial.println("Remove the Card");
       nfc.waitForTagRemoval();
-      Serial.println("Card removed!");
     }
 
-    Serial.println("Restarting...");
     nfc.reset();
-    Serial.println("Waiting for a Card...");
     delay(10);
 
     if (tagDetected) {
@@ -673,7 +618,6 @@ void runReadBlock() {
       delay(10);
     }
   } else {
-    Serial.println("No tag detected!");
     display->clearDisplay();
     display->setTextColor(SSD1306_WHITE);
     display->setCursor(0, 0);
@@ -702,15 +646,7 @@ void runWriteBlock() {
   display->display();
 
   // Set card reader/writer mode - required for tag detection
-  if (!nfc.setReaderWriterMode()) {
-    display->clearDisplay();
-    display->setCursor(0, 0);
-    display->println(F("Error setting"));
-    display->println(F("reader/writer mode"));
-    display->display();
-    delay(2000);
-    // return;
-  }
+  nfc.setReaderWriterMode();
 
   bool tagDetected = false;
   while (!inputController.isBackPressed()) {
@@ -725,7 +661,6 @@ void runWriteBlock() {
 
       switch (nfc.remoteDevice.getProtocol()) {
         case nfc.protocol.MIFARE:
-          Serial.println(" - Found MIFARE card");
           display->println(F("Starting writing"));
           display->println(F("process..."));
           display->display();
@@ -738,7 +673,6 @@ void runWriteBlock() {
           break;
 
         default:
-          Serial.println(" - Found a card, but it is not Mifare");
           display->println(F("but it is not Mifare"));
           display->display();
           break;
@@ -748,21 +682,16 @@ void runWriteBlock() {
       // protocol
       if (nfc.remoteDevice.hasMoreTags()) {
         nfc.activateNextTagDiscovery();
-        Serial.println("Multiple cards are detected!");
       }
 
       display->println(F("Please remove the tag"));
       display->println(F("from the antenna"));
       display->display();
 
-      Serial.println("Remove the Card");
       nfc.waitForTagRemoval();
-      Serial.println("Card removed!");
     }
 
-    Serial.println("Restarting...");
     nfc.reset();
-    Serial.println("Waiting for a Card...");
     delay(10);
 
     if (tagDetected) {
@@ -779,7 +708,6 @@ void runWriteBlock() {
       delay(10);
     }
   } else {
-    Serial.println("No tag detected!");
     display->clearDisplay();
     display->setTextColor(SSD1306_WHITE);
     display->setCursor(0, 0);
@@ -915,51 +843,56 @@ void showMagspoofHelp() {
  */
 void verify_konami_code() {
   enum KonamiButton { UP, DOWN, BACK, SELECT };
-  KonamiButton konamiSequence[] = {UP, UP, DOWN, DOWN, BACK, SELECT, BACK, SELECT};
-  
+  KonamiButton konamiSequence[] = {UP,   UP,     DOWN, DOWN,
+                                   BACK, SELECT, BACK, SELECT};
+
   // Start at one because we enter here with up pressed
   uint8_t konamiCodeIndex = 1;
   unsigned long lastButtonTime = millis();
-  const unsigned long timeoutMs = 3000; // 3 second timeout between presses
+  const unsigned long timeoutMs = 3000;  // 3 second timeout between presses
 
   while (konamiCodeIndex < 8) {
     inputController.update();
-    
+
     // Check for timeout
     if (millis() - lastButtonTime > timeoutMs) {
       return;
     }
-    
+
     // Check for next button in sequence
     bool correctButton = false;
-    if (konamiSequence[konamiCodeIndex] == UP && inputController.isUpPressed()) {
+    if (konamiSequence[konamiCodeIndex] == UP &&
+        inputController.isUpPressed()) {
       correctButton = true;
-    } else if (konamiSequence[konamiCodeIndex] == DOWN && inputController.isDownPressed()) {
+    } else if (konamiSequence[konamiCodeIndex] == DOWN &&
+               inputController.isDownPressed()) {
       correctButton = true;
-    } else if (konamiSequence[konamiCodeIndex] == BACK && inputController.isBackPressed()) {
+    } else if (konamiSequence[konamiCodeIndex] == BACK &&
+               inputController.isBackPressed()) {
       correctButton = true;
-    } else if (konamiSequence[konamiCodeIndex] == SELECT && inputController.isSelectPressed()) {
+    } else if (konamiSequence[konamiCodeIndex] == SELECT &&
+               inputController.isSelectPressed()) {
       correctButton = true;
     }
-    
-    if (inputController.isUpPressed() || inputController.isDownPressed() || 
+
+    if (inputController.isUpPressed() || inputController.isDownPressed() ||
         inputController.isBackPressed() || inputController.isSelectPressed()) {
-      
       if (correctButton) {
         konamiCodeIndex++;
         lastButtonTime = millis();
       } else {
-        return; // Exit if wrong button pressed
+        return;  // Exit if wrong button pressed
       }
-      
+
       // Wait for button release
-      while (inputController.isUpPressed() || inputController.isDownPressed() || 
-             inputController.isBackPressed() || inputController.isSelectPressed()) {
+      while (inputController.isUpPressed() || inputController.isDownPressed() ||
+             inputController.isBackPressed() ||
+             inputController.isSelectPressed()) {
         inputController.update();
         delay(10);
       }
     }
-    
+
     delay(10);
   }
 
@@ -992,7 +925,6 @@ void setup() {
       delay(1000);
     }
   }
-  Serial.println("Display initialized");
 
   inputController.initialize(BUTTON_UP_PIN, BUTTON_DOWN_PIN, BUTTON_SELECT_PIN,
                              BUTTON_BACK_PIN, BUTTON_DEBOUNCE_MS);
@@ -1027,7 +959,6 @@ void setup() {
     display->display();
     delay(1000);
   }
-  Serial.println("NFC controller initialized");
 }
 
 void loop() {

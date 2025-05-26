@@ -194,12 +194,6 @@ void setupTracks(String newTrack1, String newTrack2) {
   // Copy the tracks into the char arrays using strcpy
   strcpy(tracks[0], track1.c_str());
   strcpy(tracks[1], track2.c_str());
-
-  Serial.println("Default tracks:");
-  Serial.print("Track 1: ");
-  Serial.println(tracks[0]);
-  Serial.print("Track 2: ");
-  Serial.println(tracks[1]);
 }
 
 void setupMagspoof() {
@@ -211,5 +205,4 @@ void setupMagspoof() {
 
   // blink to show we started up
   blink(L1, 200, 2);
-  Serial.println("Press the MagSpoof button");
 }
