@@ -33,7 +33,6 @@ RUN arduino-cli lib install \
     "Adafruit SSD1306" \
     "ezButton" \
     "Electronic Cats PN7150" \
-    "ezButton" \
     && mkdir -p /root/Arduino/libraries
 
 # Copy project files
