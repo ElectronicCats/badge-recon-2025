@@ -180,7 +180,7 @@ void runMagspoof() {
 }
 
 void setupTracks(String newTrack1, String newTrack2) {
-  String track1 = "%B123456781234567^LASTNAME/FIRST^YYMMSSSDDDDDDDDDDDDDDDDDDDDDDDDD?";
+  String track1 = "%B123456781234567^Mitnick/Kevin^YYMMSSSDDDDDDDDDDDDDDDDDDDDDDDDD?";
   String track2 = ";123456781234567=112220100000000000000?";
 
   if (newTrack1.length() > 0) {
