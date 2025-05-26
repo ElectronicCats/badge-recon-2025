@@ -487,10 +487,12 @@ bool mifare_read_write_block(void) {
   unsigned char WritePart1[] = {0x10, 0xA0, BLK_NB_MFC};
   unsigned char WritePart2[] = {0x10, DATA_WRITE_MFC};
 
+  // Determine ChipWriteAck based on chip model
+  uint8_t ChipWriteAck = (nfc.getChipModel() == PN7160) ? 0x14 : 0x00;
+
   /* Authenticate */
   status = nfc.readerTagCmd(Auth, sizeof(Auth), Resp, &RespSize);
-  // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
-  if (false) {
+  if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Auth error!"));
@@ -500,8 +502,7 @@ bool mifare_read_write_block(void) {
 
   /* Read block */
   status = nfc.readerTagCmd(Read, sizeof(Read), Resp, &RespSize);
-  // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
-  if (false) {
+  if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error reading sector!"));
@@ -511,8 +512,7 @@ bool mifare_read_write_block(void) {
 
   /* Write block */
   status = nfc.readerTagCmd(WritePart1, sizeof(WritePart1), Resp, &RespSize);
-  // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != ChipWriteAck)) {
-  if (false) {
+  if ((status == NFC_ERROR) || (Resp[RespSize - 1] != ChipWriteAck)) {
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error writing block!"));
@@ -521,8 +521,7 @@ bool mifare_read_write_block(void) {
   }
 
   status = nfc.readerTagCmd(WritePart2, sizeof(WritePart2), Resp, &RespSize);
-  // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != ChipWriteAck)) {
-  if (false) {
+  if ((status == NFC_ERROR) || (Resp[RespSize - 1] != ChipWriteAck)) {
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error writing block!"));
@@ -532,8 +531,7 @@ bool mifare_read_write_block(void) {
 
   /* Read block again to see te changes*/
   status = nfc.readerTagCmd(Read, sizeof(Read), Resp, &RespSize);
-  // if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
-  if (false) {
+  if ((status == NFC_ERROR) || (Resp[RespSize - 1] != 0)) {
     display->clearDisplay();
     display->setCursor(0, 0);
     display->println(F("Error reading block!"));
