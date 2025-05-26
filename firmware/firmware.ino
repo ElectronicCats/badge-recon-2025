@@ -15,7 +15,6 @@
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <Preferences.h>
 #include <ezButton.h>
 #include "Electroniccats_PN7150.h"
 
@@ -68,11 +67,6 @@ Electroniccats_PN7150 nfc(PN7150_IRQ, PN7150_VEN, PN7150_ADDR, PN7150, &Wire);
  * @brief Display object for SSD1306 OLED
  */
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-/**
- * @brief Preferences object for storing settings
- */
-Preferences preferences;
 
 // Menu item type
 typedef enum {
@@ -912,6 +906,79 @@ void showMagspoofHelp() {
   }
 }
 
+/**
+ * @brief Verify Konami code input
+ *
+ * The sequence is: UP, UP, DOWN, DOWN, LEFT, RIGHT, LEFT, RIGHT
+ *
+ * @return void
+ */
+void verify_konami_code() {
+  enum KonamiButton { UP, DOWN, BACK, SELECT };
+  KonamiButton konamiSequence[] = {UP, UP, DOWN, DOWN, BACK, SELECT, BACK, SELECT};
+  
+  // Start at one because we enter here with up pressed
+  uint8_t konamiCodeIndex = 1;
+  unsigned long lastButtonTime = millis();
+  const unsigned long timeoutMs = 3000; // 3 second timeout between presses
+
+  while (konamiCodeIndex < 8) {
+    inputController.update();
+    
+    // Check for timeout
+    if (millis() - lastButtonTime > timeoutMs) {
+      return;
+    }
+    
+    // Check for next button in sequence
+    bool correctButton = false;
+    if (konamiSequence[konamiCodeIndex] == UP && inputController.isUpPressed()) {
+      correctButton = true;
+    } else if (konamiSequence[konamiCodeIndex] == DOWN && inputController.isDownPressed()) {
+      correctButton = true;
+    } else if (konamiSequence[konamiCodeIndex] == BACK && inputController.isBackPressed()) {
+      correctButton = true;
+    } else if (konamiSequence[konamiCodeIndex] == SELECT && inputController.isSelectPressed()) {
+      correctButton = true;
+    }
+    
+    if (inputController.isUpPressed() || inputController.isDownPressed() || 
+        inputController.isBackPressed() || inputController.isSelectPressed()) {
+      
+      if (correctButton) {
+        konamiCodeIndex++;
+        lastButtonTime = millis();
+      } else {
+        return; // Exit if wrong button pressed
+      }
+      
+      // Wait for button release
+      while (inputController.isUpPressed() || inputController.isDownPressed() || 
+             inputController.isBackPressed() || inputController.isSelectPressed()) {
+        inputController.update();
+        delay(10);
+      }
+    }
+    
+    delay(10);
+  }
+
+  Adafruit_SSD1306* display = displayController.getDisplay();
+  display->clearDisplay();
+  display->setTextColor(SSD1306_WHITE);
+  display->setCursor(0, 0);
+  display->println(F("Do you know"));
+  display->println(F("who owns the"));
+  display->println(F("magspoof credit"));
+  display->println(F("card?"));
+  display->display();
+
+  while (!inputController.isBackPressed()) {
+    inputController.update();
+    delay(10);
+  }
+}
+
 void setup() {
   Serial.begin(SERIAL_BAUD_RATE);
   Wire.setSDA(12);
@@ -935,6 +1002,12 @@ void setup() {
   displayController.showWelcomeScreen();
   while (true) {
     inputController.update();
+
+    // Check for Konami code input
+    if (inputController.isUpPressed()) {
+      verify_konami_code();
+    }
+
     if (inputController.isUpPressed() || inputController.isDownPressed() ||
         inputController.isSelectPressed() || inputController.isBackPressed()) {
       break;
@@ -955,18 +1028,6 @@ void setup() {
     delay(1000);
   }
   Serial.println("NFC controller initialized");
-
-  if (preferences.begin("my-app")) {
-    Serial.println("Preferences initialized");
-  } else {
-    Serial.println("Failed to initialize preferences");
-  }
-
-  int counter = preferences.getInt("counter", 1);  // default to 1
-  Serial.print("Reboot count: ");
-  Serial.println(counter);
-  counter++;
-  preferences.putInt("counter", counter);
 }
 
 void loop() {
