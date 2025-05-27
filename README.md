@@ -134,15 +134,18 @@ You can get a hint about the Easter egg by pressing the Konami code while the ba
 Up, Up, Down, Down, Left, Right, Left, Right
 ```
 
-## Maintainer
+## License
 
-<a
-href="https://github.com/sponsors/ElectronicCats">
-
-<img  src="https://electroniccats.com/wp-content/uploads/2020/07/Badge_GHS.png"  height="104" />
-
+<a href="https://github.com/ElectronicCats">
+    <img src="https://github.com/ElectronicCats/AjoloteBoard/raw/master/OpenSourceLicense.png" height="200" />
 </a>
 
 Electronic Cats invests time and resources providing this open source design, please support Electronic Cats and open-source hardware by purchasing products from Electronic Cats!
 
-[Agregando el link como referencia]: <https://github.com/ElectronicCats/Template-Project-KiCAD-CI>
+Designed by Electronic Cats.
+
+Firmware released under an GNU AGPL v3.0 license. See the LICENSE file for more information.
+
+Hardware released under an CERN Open Hardware Licence v1.2. See the LICENSE_HARDWARE file for more information.
+
+Electronic Cats is a registered trademark, please do not use if you sell these PCBs.
