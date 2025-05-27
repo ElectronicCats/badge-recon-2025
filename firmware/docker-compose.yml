@@ -1,0 +1,9 @@
+version: '3'
+services:
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # :Z for SELinux compatibility
+      - ./build:/build:Z

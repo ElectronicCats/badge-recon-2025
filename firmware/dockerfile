@@ -1,0 +1,43 @@
+FROM ubuntu:22.04
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install required packages
+RUN apt-get update && apt-get install -y \
+    curl \
+    python3 \
+    python3-pip \
+    git \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install arduino-cli
+RUN curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh \
+    && mv bin/arduino-cli /usr/local/bin/arduino-cli
+
+# Create workspace directory
+WORKDIR /app
+
+# Initialize arduino-cli config
+RUN arduino-cli config init
+
+# Add Earlephilhower RP2040 board package with the correct URL
+RUN arduino-cli config add board_manager.additional_urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json \
+    && arduino-cli core update-index \
+    && arduino-cli core install rp2040:rp2040@3.3.2
+
+# Install required libraries
+RUN arduino-cli lib install \
+    "Adafruit GFX Library" \
+    "Adafruit SSD1306" \
+    "ezButton" \
+    "Electronic Cats PN7150" \
+    && mkdir -p /root/Arduino/libraries
+
+# Copy project files
+COPY . /app/firmware
+
+# Build the firmware
+WORKDIR /app/firmware
+CMD ["sh", "-c", "arduino-cli compile --fqbn rp2040:rp2040:rpipico --build-path /app/build && cp /app/build/firmware.ino.uf2 /build/"]
