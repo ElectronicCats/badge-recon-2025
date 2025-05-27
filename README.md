@@ -1,6 +1,6 @@
 # REcon Badge 2025
 
-This is the oficial repository of the REcon Badge 2025. Here you will find the source code for the badge, as well as the documentation and instructions to build it.
+This is the official repository of the REcon Badge 2025. Here you will find the source code for the badge, as well as the documentation and instructions to build it.
 
 ## Getting Started
 
