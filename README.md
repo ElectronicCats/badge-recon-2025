@@ -50,9 +50,89 @@ cd badge-recon-2025/firmware
 
 This script will create a `firmware.ino.uf2` file in the `firmware/build` directory.
 
-#### Flashing the Firmware
+> To flash the firmware to the badge, follow the same steps as mentioned in the "Getting Started" section, but use the newly built `firmware.ino.uf2` file instead of the pre-built one.
 
-To flash the firmware to the badge, follow the same steps as mentioned in the "Getting Started" section, but use the newly built `firmware.ino.uf2` file instead of the pre-built one.
+> If you find any issues, please open an issue on the GitHub repository.
+
+## User guide
+
+Your badge comes with an SSD1306 OLED display and 4 buttons for navigation. When you power on the badge, it will display a welcome screen and then show the main menu after you press any button.
+
+All the available applications are listed in the following diagram:
+
+```mermaid
+flowchart TD
+    Start([Power On]) --> Init[Initialize Hardware]
+    Init --> Welcome[Welcome Screen]
+    Welcome --> MainMenu[Main Menu]
+    
+    MainMenu --> Apps[Apps]
+    MainMenu --> About[About Screen]
+    
+    Apps --> NFCMenu[NFC Menu]
+    Apps --> MagspoofMenu[Magspoof Menu]
+    
+    %% NFC Menu items
+    NFCMenu --> DetectTags[Detect Tags]
+    NFCMenu --> DetectReaders[Detect Readers]
+    NFCMenu --> ReadBlock[Read Block]
+    NFCMenu --> WriteBlock[Write Block]
+    
+    %% Magspoof Menu items
+    MagspoofMenu --> Emulate[Emulate]
+    MagspoofMenu --> Setup[Setup]
+    MagspoofMenu --> Help[Help]
+    
+    %% NFC operations
+    DetectTags --> SetReaderMode[Set Reader Mode]
+    SetReaderMode --> TagDetection{Tag Detected?}
+    TagDetection -->|Yes| DisplayTagInfo[Display Tag Info]
+    TagDetection -->|No| BackPressed{Back Pressed?}
+    BackPressed -->|Yes| NFCMenu
+    BackPressed -->|No| TagDetection
+    DisplayTagInfo --> WaitForRemoval[Wait For Tag Removal]
+    WaitForRemoval --> BackToMenu[Wait For Back Button]
+    BackToMenu --> NFCMenu
+    
+    %% Magspoof operations
+    Setup --> SerialPrompt[Serial Prompt for Tracks]
+    SerialPrompt --> InputTracks[Input Track Data]
+    InputTracks --> TracksUpdated[Tracks Updated]
+    TracksUpdated --> MagspoofMenu
+    
+    %% Input controller
+    subgraph InputControl [Input Controller]
+        UpButton[Up Button]
+        DownButton[Down Button]
+        SelectButton[Select Button]
+        BackButton[Back Button]
+    end
+    
+    %% Easter egg
+    UpButton --> KonamiCheck{Konami Code?}
+    KonamiCheck -->|Yes| EasterEgg[Easter Egg hint]
+    KonamiCheck -->|No| MainMenu
+```
+
+### NFC Applications
+
+- **Read Block** and **Write Block** applications are the same as **Detect Tags**, but they perform read and read/write operations if the detected tag is a Mifare Classic tag.
+- **Detect Readers** allows you to detect NFC readers by emulating a tag.
+
+### Magspoof Application
+
+The **Magspoof** application allows you to emulate a magnetic stripe card.
+
+- You can set up the tracks by entering the data through the serial prompt, use 9600 baud rate to communicate with the badge.
+- The **Emulate** option allows you to emulate the magnetic stripe card with the configured tracks.
+
+### Easter Egg
+
+You can get a hint about the Easter egg by pressing the Konami code while the badge shows the REcon logo. The Konami code is:
+
+```
+Up, Up, Down, Down, Left, Right, Left, Right
+```
 
 ## Maintainer
 
